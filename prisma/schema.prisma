@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model CourseList {
+  id               Int              @id @default(autoincrement())
+  courseId         String           @db.VarChar @unique
+  courseName       String           @db.VarChar
+  category         String           @db.VarChar
+  level            String           @db.VarChar
+  courseOutput     Json
+  isVideo          String           @default("Yes") @db.VarChar
+  username         String?          @db.VarChar
+  userprofileimage String?          @db.VarChar
+  createdBy        String?          @db.VarChar
+  courseBanner     String?          @db.VarChar
+  isPublished      Boolean          @default(false)
+  CourseChapters   CourseChapters[]
+}
+
+model CourseChapters {
+  id        Int    @id @default(autoincrement())
+  courseId  String @db.VarChar
+  chapterId Int    @db.Integer
+  content   Json
+  videoId   String @db.VarChar
+
+  CourseList CourseList @relation(fields: [courseId], references: [courseId])
+
+  @@unique([courseId, chapterId]) // Ensure that each chapterId is unique per course
+}
