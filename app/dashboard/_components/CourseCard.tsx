@@ -1,20 +1,23 @@
 import { CourseType } from '@/types/types';
-import Image from 'next/image';
 import React from 'react'
 import { MdMenuBook } from "react-icons/md";
 import { IoEllipsisVertical } from "react-icons/io5";
 import Link from 'next/link';
 import DropDownOptions from './DropDownOptions';
 import axios from 'axios';
+import Image from 'next/image';
+import { Badge } from '@/components/ui/badge';
 
 type CourseCardProps = {
     course: CourseType;
     onRefresh: () => void;
+    displayUser?: boolean;
 };
 
 function CourseCard({
     course,
     onRefresh,
+    displayUser = false,
 }: CourseCardProps) {
 
     console.log(course);
@@ -27,7 +30,6 @@ function CourseCard({
                 courseId: course?.courseId,
             });
             console.log(response.data);
-
             if (response.status === 200) {
                 onRefresh(); // Refresh the course list after deletion
             }
@@ -53,12 +55,13 @@ function CourseCard({
                 <h2 className="font-medium text-lg flex items-center justify-between">
                     {course.courseOutput.topic}
 
-                    <DropDownOptions handleDeleteCourse={() => handleOnDelete()}>
-                        <IoEllipsisVertical
-                            size={20}
-                            className="cursor-pointer p-[0.1em] text-zinc-700 rounded-sm outline-none"
-                        />
-                    </DropDownOptions>
+                    {!displayUser && (
+                        <DropDownOptions handleDeleteCourse={() => handleOnDelete()}>
+                            <IoEllipsisVertical
+                                size={20}
+                                className="cursor-pointer p-[0.1em] text-zinc-700 rounded-sm outline-none"
+                            />
+                        </DropDownOptions>)}
                 </h2>
                 <p className="text-sm text-gray-400 my-1">{course.category}</p>
 
@@ -70,6 +73,19 @@ function CourseCard({
                         {course.level} Level
                     </h2>
                 </div>
+                {displayUser && (
+                    <div className="flex justify-start items-center gap-3 mt-2">
+                        <Image
+                            src={course?.userprofileimage || "/userProfile.png"}
+                            alt={course?.username || "Ai Course Generator"}
+                            width={30}
+                            height={30}
+                            priority
+                            className="rounded-full "
+                        />
+                        <Badge variant={"outline"}>{course?.username}</Badge>
+                    </div>
+                )}
             </div>
         </div>
     );

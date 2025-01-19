@@ -2,10 +2,15 @@
 import { ChapterContentType, ChapterType, CourseType } from '@/types/types';
 import { useUser } from '@clerk/nextjs';
 import axios from 'axios';
-import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import ChapterListCard from './_components/ChapterListCard';
+import UserToolTip from './_components/UserToolTip';
+import ChapterContent from './_components/ChapterContent';
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import Image from 'next/image';
+import LoadingDialog from '@/app/create-course/_components/LoadingDialog';
+
 
 function startCourse() {
     const user = useUser();
@@ -13,6 +18,7 @@ function startCourse() {
     const param = useParams();
     const [selectedChapter, setSelectedChapter] = useState<ChapterType | null>(null);
     const [chapterContent, setChapterContent] = useState<ChapterContentType | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
         if (user) {
@@ -23,6 +29,7 @@ function startCourse() {
     }, [param]);
 
     const getCourse = async () => {
+        setLoading(true);
         // console.log(param.courseId);;
         const courseId = param.courseId;
 
@@ -38,12 +45,15 @@ function startCourse() {
         // console.log(res);
         console.log(data);
         setCourse(data);
+        
+        setLoading(false);
     };
 
     const getChapterContent = async (chapterId: number) => {
         try {
-          const response = await axios.post(
-            `/api/getChapters`, {
+            setLoading(true);
+            const response = await axios.post(
+                `/api/getChapters`, {
                 courseId: course?.courseId,
                 chapterId
             }, {
@@ -51,19 +61,26 @@ function startCourse() {
                     'Content-Type': 'application/json',
                 }
             }
-          );
-          const data = response.data;
-          console.log(data);
-          setChapterContent(data);
+            );
+            const data = await response.data;
+            console.log(data);
+            setChapterContent(data);
         } catch (e) {
-          console.error("Error fetching chapter content:", e);
+            console.error("Error fetching chapter content:", e);
+        } finally{
+            setLoading(false);
         }
-      };
+    };
+
+    if(!course){
+        return <LoadingDialog loading={loading} description={"Please wait"}/>
+    }
 
     return (
         <div>
+            <LoadingDialog loading={loading} description={"Please wait"}/>
             <div className="fixed md:w-64 hidden md:block h-screen border-r shadow-sm">
-                <h2 className="font-medium text-lg bg-primary p-4 text-white text-center">
+                <h2 className="font-bold text-2xl text-primary p-4 text-center border-b">
                     {course?.courseOutput.topic}
                 </h2>
                 <div className=' overflow-y-scroll h-screen pb-5'>
@@ -74,6 +91,7 @@ function startCourse() {
                                 "bg-purple-50"
                                 }`}
                             onClick={() => {
+                                console.log(index);
                                 setSelectedChapter(chapter);
                                 getChapterContent(index);
                             }}
@@ -86,17 +104,17 @@ function startCourse() {
 
             <div className="md:ml-64">
                 {selectedChapter ? (
-                    <div>
-                        {/* <ChapterContent
+                    <ScrollArea>
+                        <ChapterContent
                             chapter={selectedChapter}
                             content={chapterContent}
                         />
-                        <ScrollProgress /> */}
-                    </div>
+                        <ScrollBar />
+                    </ScrollArea>
                 ) : (
                     <div className="p-10 flex justify-center flex-col items-center">
                         <Image
-                            src={course?.courseBanner || "/thumbnail.png"}
+                            src={course?.courseBanner || "/logo.jpg"}
                             alt={course?.courseName || "AI Course Generator"}
                             width={350}
                             height={10}
@@ -108,10 +126,10 @@ function startCourse() {
                             Click on the chapters to get started. Enjoy learning!
                         </p>
                         <p className="mt-10">
-                            {/* <UserToolTip
-                                username={course.username || "AI Course Generator"}
-                                userProfileImage={course.userprofileimage || "/userProfile.png"}
-                            /> */}
+                            <UserToolTip
+                                username={course?.username || "AI Course Generator"}
+                                userProfileImage={course?.userprofileimage || "/userProfile.png"}
+                            />
                         </p>
                     </div>
                 )}

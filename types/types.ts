@@ -47,11 +47,16 @@ export type UserInputType = {
     explanation: string;
     code_examples?: CodeExampleType[];
   };
+
+  export type contentType = {
+    chapters: string;
+    concepts: ChapterSectionType[];
+  }
   
   export type ChapterContentType = {
     id: number;
     chapterId: number;
     courseId: string;
-    content: ChapterSectionType[];
+    content: contentType;
     videoId: string;
   };

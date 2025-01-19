@@ -36,7 +36,7 @@ model CourseChapters {
   content   Json
   videoId   String @db.VarChar
 
-  CourseList CourseList @relation(fields: [courseId], references: [courseId])
+  CourseList CourseList @relation(fields: [courseId], references: [courseId], onDelete: Cascade)
 
   @@unique([courseId, chapterId]) // Ensure that each chapterId is unique per course
 }
