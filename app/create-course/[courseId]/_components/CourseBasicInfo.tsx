@@ -5,11 +5,12 @@ import { LuPuzzle } from "react-icons/lu";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
-// import { uploadFilesToFirebase } from "../_utils/uploadFilesToFirebase";
 import { CourseType } from "@/types/types";
 import Link from "next/link";
 import EditCourseBasicInfo from "./_edit/EditCourseBasicInfo";
-import { uploadFilesToDropbox } from "../_utils/uploadFileToDropbox";
+import { uploadFileToCloudinary } from "../_utils/uploadFileToCloudinary";
+import { saveImageUrlToDB } from "../_utils/saveImageUrlToDB";
+import LoadingDialog from "../../_components/LoadingDialog";
 
 type CourseBasicInfoProps = {
   courseInfo: CourseType | null;
@@ -23,10 +24,10 @@ const CourseBasicInfo = ({
   edit = true,
 }: CourseBasicInfoProps) => {
   const [selectedImage, setSelectedImage] = useState<string | null | undefined>(null);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
 
   useEffect(() => {
     setSelectedImage(courseInfo?.courseBanner);
-    console.log("Using refresh token:", process.env.NEXT_PUBLIC_DROPBOX_REFRESH_TOKEN);
     console.log(courseInfo);
     console.log(courseInfo?.courseBanner);
     // console.log(courseInfo?.courseOutput.topic);
@@ -34,18 +35,22 @@ const CourseBasicInfo = ({
   }, [courseInfo]);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.item(0) as Blob;
-    // setSelectedImage(URL.createObjectURL(file));
-    const updatedCourse = await uploadFilesToDropbox(file, courseInfo!)
-    console.log(updatedCourse);
-    
-
+    const file = e.target.files?.item(0);
+    if (!file) return;
+    setIsUploading(true);
     try {
-      const updatedCourse = await uploadFilesToDropbox(file, courseInfo!);
-      setSelectedImage(updatedCourse.updatedCourse.courseBanner);
+      const updatedImageUrl = await uploadFileToCloudinary(file);
+      if (courseInfo?.courseId) {
+        const updatedImage = await saveImageUrlToDB(courseInfo?.courseId,updatedImageUrl);
+        console.log(updatedImage);
+        
+      }
+      setSelectedImage(updatedImageUrl);
       onRefresh(true); // Notify parent to refresh the data
     } catch (error) {
       console.error("Image upload failed:", error);
+    } finally{
+      setIsUploading(false);
     }
   };
 
@@ -54,6 +59,7 @@ const CourseBasicInfo = ({
 
   return (
     <div className="p-10 border rounded-xl shadow-sm mt-5">
+      <LoadingDialog loading={isUploading} description={"Please wait"} />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div className="my-8 px-2">
           <h2 className="font-bold text-3xl text-primary">
