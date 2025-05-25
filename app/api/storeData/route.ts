@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import db from "@/db" // Ensure this is correctly set up
 
+export const dynamic = 'force-dynamic'; // Add this at the top of your file
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
