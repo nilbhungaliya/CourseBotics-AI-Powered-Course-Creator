@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState, useTransition } from "react";
-import { useSearchParams } from "next/navigation";
 import {
   Form,
   FormControl,

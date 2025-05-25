@@ -1,10 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { BeatLoader } from "react-spinners";
 import { motion } from "framer-motion";
-import { CheckCircle, Router, XCircle } from "lucide-react";
+import { CheckCircle, XCircle } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -36,7 +36,7 @@ const NewVerificationPage = () => {
       if (data.success) {
         setSuccess(data.success);
       }
-    } catch (error) {
+    } catch (_) {
       setError("Something went wrong!");
     } finally {
       setIsPending(false);

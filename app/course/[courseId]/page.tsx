@@ -16,6 +16,8 @@ function CoursePage() {
     const param = useParams();
     const [course, setCourse] = useState<CourseType | null>(null);
 
+
+
     useEffect(() => {
         if (session?.user) {
             console.log("user:", session.user);
@@ -27,7 +29,7 @@ function CoursePage() {
 
     const getCourse = async () => {
         setLoading(true);
-        // console.log(param.courseId);;
+        // console.log(param.courseId);
         const courseId = param.courseId;
 
         const res = await axios.post(`/api/course/${courseId}`, {

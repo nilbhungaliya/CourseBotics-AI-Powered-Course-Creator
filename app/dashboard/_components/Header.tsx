@@ -3,10 +3,9 @@
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { UserButton } from "@/components/ui/user-button";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Menu,
-  Search,
   Bell,
   X,
   Check,
@@ -33,7 +32,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { useRouter } from "next/navigation";
-import { auth, signOut } from "@/auth";
+// import { auth, signOut } from "@/auth";
 import { useSession } from 'next-auth/react';
 
 interface HeaderProps {
@@ -67,7 +66,7 @@ export default function Header({ toggleSidebar, isSidebarOpen }: HeaderProps) {
   const [isSearching, setIsSearching] = useState(false);
   const [showSearchResults, setShowSearchResults] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
-  const session = useSession()
+  // const session = useSession()
 
   const [notifications, setNotifications] = useState<Notification[]>([
     {
