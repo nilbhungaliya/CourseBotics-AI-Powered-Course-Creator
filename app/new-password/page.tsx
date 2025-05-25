@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ArrowLeft, Mail, Loader2, Lock, EyeOff, Eye } from "lucide-react";
+import { ArrowLeft, Loader2, Lock, EyeOff, Eye } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormError } from "@/components/form-error";

@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { ReactElement, useRef, useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   Form,
@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
+
 import {
   ArrowLeft,
   Mail,
@@ -359,7 +359,7 @@ export default function Page() {
             {showTwoFactor && (
               <div className="mt-6">
                 <div className="text-center text-sm text-slate-600 dark:text-slate-400">
-                  <p>We've sent a verification code to your email.</p>
+                  <p>We&apos;ve sent a verification code to your email.</p>
                   <p className="mt-1">Please enter it above to complete sign in.</p>
                   <button
                     type="button"
@@ -387,7 +387,7 @@ export default function Page() {
           className="mt-8 text-center"
         >
           <p className="text-sm text-slate-600 dark:text-slate-400">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link
               href="/sign-up"
               className="text-primary hover:text-primary/90 font-medium"

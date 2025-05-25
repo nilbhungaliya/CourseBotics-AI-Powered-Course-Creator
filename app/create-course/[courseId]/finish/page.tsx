@@ -2,30 +2,21 @@
 import { CourseType } from '@/types/types';
 import { useSession } from 'next-auth/react'
 import axios from 'axios';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import CourseBasicInfo from '../_components/CourseBasicInfo';
 import Link from 'next/link';
 import { IoCopyOutline } from "react-icons/io5";
 
 
-function finish() {
+function Finish() {
   const { data: session } = useSession();
   const param = useParams();
 
   const [course, setCourse] = useState<CourseType | null>(null);
 
-  const router = useRouter();
+  // Router might be needed in the future
   const COURSE_LINK = `${process.env.NEXT_PUBLIC_DOMAIN}/course/${course?.courseId}/start`;
-
-  useEffect(() => {
-    if (session?.user) {
-      console.log("user:", session.user);
-      param && getCourse();
-    } else {
-      console.log("User is not authenticated");
-    }
-  }, [param, session?.user]);
 
   const getCourse = async () => {
     console.log(param.courseId);
@@ -44,6 +35,17 @@ function finish() {
     console.log(data);
     setCourse(data as CourseType);
   };
+
+  useEffect(() => {
+    if (session?.user) {
+      console.log("user:", session.user);
+      if (param) {
+        getCourse();
+      }
+    } else {
+      console.log("User is not authenticated");
+    }
+  }, [param, session?.user]);
 
   return (
     <div className="px-10 md:px-20 lg:px-44 my-7">
@@ -69,4 +71,4 @@ function finish() {
   );
 }
 
-export default finish
+export default Finish

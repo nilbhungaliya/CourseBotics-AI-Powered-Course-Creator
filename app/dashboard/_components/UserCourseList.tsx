@@ -113,7 +113,7 @@ export default function UserCourseList() {
                 </div>
                 <h3 className="text-xl font-semibold mb-2">No courses found</h3>
                 <p className="text-muted-foreground mb-6 max-w-md">
-                    You haven't created any courses yet. Start creating your first AI-powered course now!
+                    You haven&apos;t created any courses yet. Start creating your first AI-powered course now!
                 </p>
             </motion.div>
         );

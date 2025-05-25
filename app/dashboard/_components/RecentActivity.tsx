@@ -13,7 +13,7 @@ import { useSession } from 'next-auth/react';
 
 export default function RecentActivity() {
   const { userCourseList } = useContext(UserCourseListContext);
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   
   // Sort courses by most recent (assuming we don't have a createdAt field, we'll use the id as a proxy)
   // Safely handle the case where userCourseList might be undefined
@@ -21,14 +21,15 @@ export default function RecentActivity() {
     ? [...userCourseList].sort((a, b) => b.id - a.id).slice(0, 3)
     : [];
   
-  const formatDate = () => {
-    const date = new Date();
-    return new Intl.DateTimeFormat('en-US', { 
-      month: 'short', 
-      day: 'numeric', 
-      year: 'numeric' 
-    }).format(date);
-  };
+  // Helper function to format dates (will be used in future updates)
+  // const formatDate = () => {
+  //   const date = new Date();
+  //   return new Intl.DateTimeFormat('en-US', { 
+  //     month: 'short', 
+  //     day: 'numeric', 
+  //     year: 'numeric' 
+  //   }).format(date);
+  // };
   
   const getRandomDate = (index: number) => {
     const date = new Date();

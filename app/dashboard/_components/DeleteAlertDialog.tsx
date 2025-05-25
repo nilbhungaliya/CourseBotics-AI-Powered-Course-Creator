@@ -8,7 +8,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { AlertTriangle, Trash2 } from "lucide-react";
 
 type DeleteAlertDialogProps = {
