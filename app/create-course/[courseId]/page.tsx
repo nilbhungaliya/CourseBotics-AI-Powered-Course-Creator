@@ -1,6 +1,6 @@
 "use client";
 
-import { useUser } from '@clerk/nextjs';
+import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -13,20 +13,20 @@ import { CourseType } from '@/types/types';
 import { GenerateCourseContent } from './_utils/GenerateCourseContent';
 
 function CoursePageLayout() {
-    const { user } = useUser();
+    const { data: session } = useSession();
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
     const param = useParams();
     const [course, setCourse] = useState<CourseType | null>(null);
 
     useEffect(() => {
-        if (user) {
-            console.log("user:", user);
+        if (session?.user) {
+            console.log("user:", session.user);
             param && getCourse();
         } else {
             console.log("User is not authenticated");
         }
-    }, [param, user]);
+    }, [param, session?.user]);
 
     const getCourse = async () => {
         setLoading(true);
@@ -34,7 +34,7 @@ function CoursePageLayout() {
         const courseId = param.courseId;
 
         const res = await axios.post(`/api/course/${courseId}`, {
-            user: { email: user?.primaryEmailAddress?.emailAddress },
+            user: { email: session?.user?.email },
         }, {
             headers: {
                 'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ function CoursePageLayout() {
 
         const res = await axios.patch(`/api/course/${courseId}`, {
             isPublished: true,
-            user: { email: user?.primaryEmailAddress?.emailAddress },
+            user: { email: session?.user?.email },
         }, {
             headers: {
                 'Content-Type': 'application/json',

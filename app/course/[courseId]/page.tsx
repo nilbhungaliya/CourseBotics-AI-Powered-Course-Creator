@@ -5,25 +5,25 @@ import CourseBasicInfo from '@/app/create-course/[courseId]/_components/CourseBa
 import CourseDetail from '@/app/create-course/[courseId]/_components/CourseDetail';
 import LoadingDialog from '@/app/create-course/_components/LoadingDialog';
 import { CourseType } from '@/types/types';
-import { useUser } from '@clerk/nextjs';
+import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 function CoursePage() {
-    const { user } = useUser();
+    const { data: session } = useSession();
     const [loading, setLoading] = useState<boolean>(false);
     const param = useParams();
     const [course, setCourse] = useState<CourseType | null>(null);
 
     useEffect(() => {
-        if (user) {
-            console.log("user:", user);
+        if (session?.user) {
+            console.log("user:", session.user);
             param && getCourse();
         } else {
             console.log("User is not authenticated");
         }
-    }, [param, user]);
+    }, [param, session?.user]);
 
     const getCourse = async () => {
         setLoading(true);
@@ -31,7 +31,7 @@ function CoursePage() {
         const courseId = param.courseId;
 
         const res = await axios.post(`/api/course/${courseId}`, {
-            user: { email: user?.primaryEmailAddress?.emailAddress },
+            user: { email: session?.user?.email },
         }, {
             headers: {
                 'Content-Type': 'application/json',

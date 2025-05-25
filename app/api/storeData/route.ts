@@ -13,9 +13,9 @@ export async function POST(request: Request) {
         category: userInput.category || "Unknown Category", // Provide fallback
         level: userInput.difficulty || "Unknown Level", // Provide fallback
         courseOutput: data, // Ensure this is of type InputJsonValue
-        createdBy: user?.primaryEmailAddress?.emailAddress || null,
-        username: user?.fullName || null,
-        userprofileimage: user?.imageUrl || null,
+        createdBy: user?.email || null,
+        username: user?.name || null,
+        userprofileimage: user?.image || null,
       },
     });
 

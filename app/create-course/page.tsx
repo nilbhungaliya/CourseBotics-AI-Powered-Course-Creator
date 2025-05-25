@@ -11,7 +11,7 @@ import { generateCourseLayout_AI } from '@/configs/AiModel';
 import LoadingDialog from './_components/LoadingDialog';
 import { CourseType, UserInputType } from '@/types/types';
 import uuid4 from "uuid4";
-import { useUser } from '@clerk/nextjs';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { storeDataInDatabase } from './_utils/StoreDataInDatabase';
@@ -21,7 +21,7 @@ function CreateCourse() {
   const [step, setStep] = useState<number>(0);
   const { userInput, setUserInput } = useContext(UserInputContext);
   const [loading, setLoading] = useState(false);
-  const { user } = useUser();
+  const { data: session } = useSession();
   const router = useRouter();
 
   useEffect(() => {
@@ -76,7 +76,7 @@ function CreateCourse() {
   const GenerateCourse = async () => {
     setLoading(true); // Use `loading` state here
     try {
-      await GenerateCourseLayout(userInput, user, router);
+      await GenerateCourseLayout(userInput, session?.user, router);
     } catch (error) {
       console.error(error);
     } finally {

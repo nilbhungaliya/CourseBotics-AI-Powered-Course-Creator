@@ -1,31 +1,47 @@
 import type { Metadata } from "next";
-import { Inter, Outfit } from "next/font/google";
+import { Outfit } from "next/font/google";
 import "./globals.css";
-import { ClerkLoaded, ClerkProvider, GoogleOneTap } from "@clerk/nextjs";
-import { Header } from "./_components/Header";
+import { ThemeProvider } from "@/components/theme-provider";
+import { SessionProvider } from "next-auth/react";
+import { auth } from "@/auth";
 
-const inter = Outfit({ subsets: ["latin"] });
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
+});
 
 export const metadata: Metadata = {
-  title: "AI-Powered Course Creator",
+  title: "CourseBotics",
   description:
-    "AI-Powered Course Creator is an innovative platform that enables users to effortlessly design and build educational courses using artificial intelligence. By providing details such as the course title, duration, number of chapters, and whether video content is required, the platform generates a comprehensive course outline along with suggested YouTube videos tailored to each chapter.",
+    "CourseBotics is an innovative AI-powered platform that enables users to effortlessly design and build educational courses using artificial intelligence. By providing details such as the course title, duration, number of chapters, and whether video content is required, the platform generates a comprehensive course outline along with suggested YouTube videos tailored to each chapter.",
+  icons: {
+    icon: [
+      { url: "/favicon.svg" }
+    ]
+  }
 };
 
-
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+  
   return (
-    <html lang="en">
-      <ClerkProvider>
-        <GoogleOneTap />
-        <body className={inter.className}>
-          <ClerkLoaded>{children}</ClerkLoaded>
-        </body>
-      </ClerkProvider>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${outfit.className} antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <SessionProvider session={session}>
+            {children}
+          </SessionProvider>
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

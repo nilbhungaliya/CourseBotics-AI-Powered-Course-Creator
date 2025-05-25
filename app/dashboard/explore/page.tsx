@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react'
 import SkeletonLoading from '../_components/SkeletonLoading';
 import CourseCard from '../_components/CourseCard';
 
-function Explore() {
+export default function Explore() {
   const [courseList, setCourseList] = useState<CourseType[] | null>(null);
   const [pageIndex, setPageIndex] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -74,4 +74,3 @@ function Explore() {
   );
 }
 
-export default Explore

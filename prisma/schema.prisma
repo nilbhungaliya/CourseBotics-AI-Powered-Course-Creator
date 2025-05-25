@@ -13,9 +13,101 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  emailVerified DateTime? @map("email_verified")
+  name          String?
+  password      String?
+  role          Role      @default(USER)
+  session       Session[]
+  accounts      Account[]
+  image         String?
+  isTwoFactorEnabled Boolean @default(false)
+  twoFactorComfirmation TwoFactorConfirmation?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("users")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String
+  expires      DateTime
+  requires2FA  Boolean  @default(true)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String  @map("user_id")
+  type               String
+  provider           String
+  providerAccountId  String  @map("provider_account_id")
+  refresh_token      String? @db.Text
+  access_token       String? @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String? @db.Text
+  session_state      String?
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model varificationToken{
+  id String @id @default(cuid())
+  email String @unique
+  token String @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model PasswordResetToken{
+  id String @id @default(cuid())
+  email String @unique
+  token String @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorToken{
+  id String @id @default(cuid())
+  email String @unique
+  token String @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorConfirmation{
+  id String @id @default(cuid())
+  userId String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId])
+}
+
+
+
 model CourseList {
   id               Int              @id @default(autoincrement())
-  courseId         String           @db.VarChar @unique
+  courseId         String           @unique @db.VarChar
   courseName       String           @db.VarChar
   category         String           @db.VarChar
   level            String           @db.VarChar

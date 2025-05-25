@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="robotGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#818CF8" />
+      <stop offset="100%" stop-color="#4F46E5" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1024" height="1024" fill="white"/>
+  
+  <!-- Robot head icon - modernized with gradients -->
+  <g transform="translate(312, 312) scale(4)">
+    <!-- Main head with gradient -->
+    <rect x="5" y="10" width="30" height="25" rx="8" fill="url(#robotGradient)" filter="drop-shadow(0px 2px 3px rgba(99, 102, 241, 0.3))" />
+    
+    <!-- Antenna/top part with rounded edges -->
+    <rect x="10" y="5" width="20" height="5" rx="2.5" fill="url(#robotGradient)" />
+    
+    <!-- Eyes with subtle glow -->
+    <circle cx="15" cy="20" r="3.5" fill="white" filter="url(#glow)" />
+    <circle cx="25" cy="20" r="3.5" fill="white" filter="url(#glow)" />
+    <circle cx="15" cy="20" r="1.5" fill="#4F46E5" opacity="0.7" />
+    <circle cx="25" cy="20" r="1.5" fill="#4F46E5" opacity="0.7" />
+    
+    <!-- Mouth - slightly curved for friendlier appearance -->
+    <path d="M15 28 Q20 30 25 28" stroke="white" stroke-width="2" stroke-linecap="round" />
+    
+    <!-- Bottom light indicator -->
+    <rect x="12" y="35" width="16" height="3" rx="1.5" fill="#4338CA" />
+    
+    <!-- Side antennas with rounded caps -->
+    <rect x="2" y="18" width="3" height="8" rx="1.5" fill="#4338CA" />
+    <rect x="35" y="18" width="3" height="8" rx="1.5" fill="#4338CA" />
+  </g>
+  
+  <!-- Text "CourseBotics" -->
+  <g transform="translate(312, 650)">
+    <text font-family="Arial, sans-serif" font-weight="bold" font-size="60" fill="#1F2937">
+      Course<tspan fill="#6366F1">Botics</tspan>
+    </text>
+  </g>
+  
+  <!-- Add subtle animation for the robot -->
+  <style>
+    @keyframes pulse {
+      0% { opacity: 0.9; }
+      50% { opacity: 1; }
+      100% { opacity: 0.9; }
+    }
+    
+    @media (prefers-reduced-motion: no-preference) {
+      svg g:first-child circle:nth-child(3),
+      svg g:first-child circle:nth-child(4) {
+        animation: pulse 3s ease-in-out infinite;
+      }
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      rect:first-child {
+        fill: #1F2937;
+      }
+      text {
+        fill: #F9FAFB;
+      }
+    }
+  </style>
+</svg>

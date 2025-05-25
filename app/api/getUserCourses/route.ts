@@ -3,18 +3,16 @@ import db from "@/db"
 
 export const POST = async (req: NextRequest) => {
     const body = await req.json();
-    const { user } = body;
-    console.log(user?.primaryEmailAddress?.emailAddress);
+    const { email } = body;
     
-
-    if (!user) {
+    if (!email) {
         return NextResponse.json({ error: "Missing required parameter: email" }, { status: 400 });
     }
 
     try {
         const courses = await db.courseList.findMany({
             where: {
-                createdBy: user?.user?.primaryEmailAddress?.emailAddress,
+                createdBy: email,
             },
         });
 

@@ -60,3 +60,8 @@ export type UserInputType = {
     content: contentType;
     videoId: string;
   };
+
+  export type PrevState = {
+  success: boolean;
+  message: string;
+};

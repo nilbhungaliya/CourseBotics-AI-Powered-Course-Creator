@@ -1,6 +1,6 @@
 "use client";
 import { CourseType } from '@/types/types';
-import { useUser } from '@clerk/nextjs'
+import { useSession } from 'next-auth/react'
 import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
@@ -10,7 +10,7 @@ import { IoCopyOutline } from "react-icons/io5";
 
 
 function finish() {
-  const { user } = useUser();
+  const { data: session } = useSession();
   const param = useParams();
 
   const [course, setCourse] = useState<CourseType | null>(null);
@@ -19,20 +19,20 @@ function finish() {
   const COURSE_LINK = `${process.env.NEXT_PUBLIC_DOMAIN}/course/${course?.courseId}/start`;
 
   useEffect(() => {
-    if (user) {
-      console.log("user:", user);
+    if (session?.user) {
+      console.log("user:", session.user);
       param && getCourse();
     } else {
       console.log("User is not authenticated");
     }
-  }, [param, user]);
+  }, [param, session?.user]);
 
   const getCourse = async () => {
     console.log(param.courseId);
     const courseId = param.courseId;
 
     const res = await axios.post(`/api/course/${courseId}`, {
-      user: { email: user?.primaryEmailAddress?.emailAddress },
+      user: { email: session?.user?.email },
     }, {
       headers: {
         'Content-Type': 'application/json',
