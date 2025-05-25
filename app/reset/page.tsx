@@ -28,7 +28,7 @@ import { ResetSchema, ResetType } from "@/schemas/resetSchema";
 import { reset } from "../_actions/reset";
 
 export default function Page() {
-  const searchParams = useSearchParams();
+  // Removed unused searchParams
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
 
