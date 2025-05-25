@@ -2,6 +2,7 @@
 import { Header } from "./_components/Header";
 import Hero from "./_components/Hero";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -106,9 +107,9 @@ export default function Home() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <a href="/sign-up" className="inline-flex h-10 md:h-12 items-center justify-center rounded-full bg-white px-6 md:px-8 text-sm font-medium text-primary shadow transition-colors hover:bg-white/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white">
+                  <Link href="/sign-up" className="inline-flex h-10 md:h-12 items-center justify-center rounded-full bg-white px-6 md:px-8 text-sm font-medium text-primary shadow transition-colors hover:bg-white/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white">
                     Get Started for Free
-                  </a>
+                  </Link>
                 </motion.div>
               </div>
             </motion.div>
