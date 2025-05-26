@@ -53,6 +53,7 @@ function CoursePageLayout() {
     const handleGenerateCourseContent = async () => {
         setLoading(true)
         const courseId = param.courseId;
+        console.log(course);
         const Chapterdata = await GenerateCourseContent(course, setLoading);
         console.log({Chapterdata});
 

@@ -40,7 +40,7 @@ export const GenerateCourseContent = async (
           };
         } catch (error) {
           console.error(`Error in processing chapter ${index}:`, error);
-          return null;
+          return {error};
         }
       })
     );
@@ -66,6 +66,7 @@ export const GenerateCourseContent = async (
       return response.data;
   } catch (error) {
     console.error(error);
+    return {error}
   } finally {
     setLoading(false);
   }
