@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import db from "@/db";
 import { InputJsonValue, JsonValue } from '@prisma/client/runtime/library';
 
+export const runtime = 'nodejs'
+
 export const POST = async (req: NextRequest, args: any) => {
   try {
     const courseId = await args.params.courseId;

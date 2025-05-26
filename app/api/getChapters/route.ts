@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import db from "@/db";
 
+export const runtime = 'nodejs'
+
 export const POST = async (req: NextRequest) => {
     const body = await req.json();
     const { courseId, chapterId } = body;

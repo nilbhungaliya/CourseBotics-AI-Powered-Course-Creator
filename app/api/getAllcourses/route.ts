@@ -2,6 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { NextRequest, NextResponse } from "next/server";
 import db from "@/db"
 
+export const runtime = 'nodejs'
+
 export const POST = async (req: NextRequest) => {
     const body = await req.json();
     const { pageIndex } = body;
