@@ -21,16 +21,16 @@ export const GenerateCourseContent = async (
 
           // Fetch video ID
           const resp = await getYoutubeVideos(query);
-          console.log("Videos", resp);
+          // console.log("Videos", resp);
           const videoId = resp[0].id.videoId;
 
           // Generate course content
           const result = await GenerateChapterContent_AI.sendMessage(PROMPT);
-          console.log(result);
+          // console.log(result);
           
           const content = JSON.parse(result?.response?.text()!);
 
-          console.log(content);
+          // console.log(content);
           
           return {
             chapterId: index,
@@ -47,7 +47,7 @@ export const GenerateCourseContent = async (
 
     const validChapters = processedChapters.filter((chapter) => chapter !== null);
 
-    console.log(validChapters);
+    // console.log(validChapters);
     
     // Send processed chapters to the server
     const response = await axios.post(
@@ -62,7 +62,7 @@ export const GenerateCourseContent = async (
           }
         }
       );
-      console.log(response.data);
+      // console.log(response.data);
       return response.data;
   } catch (error) {
     console.error(error);

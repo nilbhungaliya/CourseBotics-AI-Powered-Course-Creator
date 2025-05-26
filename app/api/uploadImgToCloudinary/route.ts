@@ -31,7 +31,7 @@ export const runtime = 'nodejs'
 export async function POST(req: NextRequest) {
   try {
     const { file } = await req.json();
-    console.log("Received file:", file);
+    // console.log("Received file:", file);
 
     if (!file) {
       return NextResponse.json({ error: "File is required" }, { status: 400 });
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
       folder: "ai-course-generator",
     });
 
-    console.log("Cloudinary URL:", uploadResponse.secure_url);
+    // console.log("Cloudinary URL:", uploadResponse.secure_url);
 
     return NextResponse.json({ url: uploadResponse.secure_url }, { status: 200 });
   } catch (error) {

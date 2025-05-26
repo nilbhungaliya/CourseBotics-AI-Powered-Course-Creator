@@ -46,7 +46,7 @@ export default function Page() {
     setSuccess("");
     startTransition(() => {
       newPasswordAction(values, token).then((data) => {
-        console.log(data);
+        // console.log(data);
         setError(data?.error);
         setSuccess(data?.success);
 

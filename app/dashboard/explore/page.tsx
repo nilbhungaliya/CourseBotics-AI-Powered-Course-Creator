@@ -18,14 +18,14 @@ export default function Explore() {
 
   const getAllCourses = async () => {
     setLoading(true);
-    console.log(pageIndex);
+    // console.log(pageIndex);
     
     try {
       const response = await axios.post("/api/getAllcourses", {
         pageIndex
       });
       const data = response.data; 
-      console.log(data);
+      // console.log(data);
       setCourseList(data); // Assign the response data to the state
     } catch (error) {
       console.error("Error fetching courses:", error);

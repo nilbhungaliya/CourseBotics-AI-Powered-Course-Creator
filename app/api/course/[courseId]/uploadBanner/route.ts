@@ -9,7 +9,7 @@ export const POST = async (req: NextRequest, args: any) => {
     const body = await req.json();
     const { fileUrl } = body;
 
-    console.log("Body: " + body);
+    // console.log("Body: " + body);
 
     const url = fileUrl.replace("dl=0", "raw=1");
     // Save the file URL in the database

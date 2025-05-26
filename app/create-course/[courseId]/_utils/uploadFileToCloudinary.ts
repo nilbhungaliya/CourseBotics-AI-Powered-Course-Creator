@@ -3,7 +3,7 @@ import axios from "axios";
 // utils/uploadFile.ts
 export const uploadFileToCloudinary = async (file: File): Promise<string> => {
     const base64File = await convertToBase64(file); // Convert file to Base64
-    console.log(base64File);
+    // console.log(base64File);
     
     const response = await axios.post("/api/uploadImgToCloudinary", { file: base64File });
   

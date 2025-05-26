@@ -7,7 +7,7 @@ export const runtime = 'nodejs'
 export const POST = async (req: NextRequest) => {
     const body = await req.json();
     const { pageIndex } = body;
-    console.log(pageIndex);
+    // console.log(pageIndex);
 
     try {
         const page = parseInt(pageIndex as string) || 0;

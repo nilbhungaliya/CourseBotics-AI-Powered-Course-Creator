@@ -6,7 +6,7 @@ export const runtime = 'nodejs'
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        console.log(body);
+        // console.log(body);
         
         const { courseId, chapters } = body;
 

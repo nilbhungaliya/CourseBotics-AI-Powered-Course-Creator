@@ -28,8 +28,8 @@ const CourseBasicInfo = ({
 
   useEffect(() => {
     setSelectedImage(courseInfo?.courseBanner);
-    console.log(courseInfo);
-    console.log(courseInfo?.courseBanner);
+    // console.log(courseInfo);
+    // console.log(courseInfo?.courseBanner);
     // console.log(courseInfo?.courseOutput.topic);
     // console.log(courseInfo?.courseOutput.description);
   }, [courseInfo]);
@@ -42,7 +42,7 @@ const CourseBasicInfo = ({
       const updatedImageUrl = await uploadFileToCloudinary(file);
       if (courseInfo?.courseId) {
         const updatedImage = await saveImageUrlToDB(courseInfo?.courseId,updatedImageUrl);
-        console.log(updatedImage);
+        // console.log(updatedImage);
         
       }
       setSelectedImage(updatedImageUrl);

@@ -11,8 +11,8 @@ export const saveImageUrlToDB = async (courseId: string, fileUrl: string) => {
         "Content-Type": "application/json",
       },
     });
-    console.log("Image URL saved successfully");
-    console.log(FileUrlDb);
+    // console.log("Image URL saved successfully");
+    // console.log(FileUrlDb);
     return FileUrlDb;
   } catch (error) {
     console.error("Error saving image URL to DB:", error);
