@@ -54,7 +54,7 @@ function CoursePageLayout() {
         setLoading(true)
         const courseId = param.courseId;
         const Chapterdata = await GenerateCourseContent(course, setLoading);
-        // console.log(Chapterdata);
+        console.log({Chapterdata});
 
         const res = await axios.patch(`/api/course/${courseId}`, {
             isPublished: true,
