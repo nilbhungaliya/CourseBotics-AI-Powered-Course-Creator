@@ -20,7 +20,6 @@ function CoursePage() {
 
     useEffect(() => {
         if (session?.user) {
-            console.log("user:", session.user);
             param && getCourse();
         } else {
             console.log("User is not authenticated");
@@ -42,7 +41,7 @@ function CoursePage() {
 
         const data = res.data;
         // console.log(res);
-        // console.log(data);
+        // console.log({data});
         setCourse(data);
         setLoading(false);
     };

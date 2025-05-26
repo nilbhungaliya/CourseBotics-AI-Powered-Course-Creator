@@ -36,7 +36,7 @@ function EditCourseBasicInfo({ courseInfo, onRefresh }: EditCourseBasicInfoProps
     const updateCourseInfo = async () => {
         try {
 
-            console.log(courseDescription);
+            // console.log(courseDescription);
 
             const updatedCourseInfo = {
                 id: courseInfo?.id, // Ensure you send the course ID
@@ -45,11 +45,11 @@ function EditCourseBasicInfo({ courseInfo, onRefresh }: EditCourseBasicInfoProps
                     description: courseDescription,
                 },
             };
-            console.log(updatedCourseInfo);
+            // console.log(updatedCourseInfo);
 
             const response = await axios.put(`/api/course/${courseInfo?.courseId}`, updatedCourseInfo);
 
-            console.log('Updated course:', response.data.updatedCourse);
+            // console.log('Updated course:', response.data.updatedCourse);
             onRefresh(true);
         }
         catch (error) {

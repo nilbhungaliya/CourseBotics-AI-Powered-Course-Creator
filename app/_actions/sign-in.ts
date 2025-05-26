@@ -15,7 +15,7 @@ import prisma from "@/db";
 import { getTwoFactorConfirmationByUserId } from "@/data/two-factor-confirmation";
 
 export const signInAction = async (values: SignInType) => {
-  console.log({ values });
+  // console.log({ values });
 
   // console.log(typeof(values.email));
 
@@ -29,7 +29,7 @@ export const signInAction = async (values: SignInType) => {
   }
 
   const existingUser = await getUserByEmail(data.email);
-  console.log(existingUser);
+  // console.log(existingUser);
 
   if (!existingUser || !existingUser.email || !existingUser.password) {
     return { error: "Email does not exist" };

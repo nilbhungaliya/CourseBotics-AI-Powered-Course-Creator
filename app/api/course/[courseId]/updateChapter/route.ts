@@ -7,10 +7,10 @@ export const runtime = 'nodejs'
 
 export const PUT = async (req: NextRequest, args: any) => {
   const body = await req.json();
-  console.log(body);
+  // console.log(body);
   const { id, chapterIndex, chapterName, about } = body; // Extract relevant data
 
-  console.log(body);
+  // console.log(body);
 
   // Validate the input
   if (!id || chapterIndex === undefined || !chapterName || !about) {
@@ -30,7 +30,7 @@ export const PUT = async (req: NextRequest, args: any) => {
     const currentCourseOutput = currentCourse.courseOutput as Record<string, any>;
     const updatedChapters = [...currentCourseOutput.chapters];
 
-    console.log(updatedChapters);
+    // console.log(updatedChapters);
 
     // Update the specific chapter by index
     if (updatedChapters[chapterIndex]) {

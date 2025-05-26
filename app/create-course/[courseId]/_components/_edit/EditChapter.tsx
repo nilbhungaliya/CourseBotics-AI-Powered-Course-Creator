@@ -42,8 +42,8 @@ function EditChapter({ course, index, onRefresh }: EditChapterProps) {
     const updateChapterInfo = async () => {
         try {
 
-            console.log(chapterName);
-            console.log(chapterAbout);
+            // console.log(chapterName);
+            // console.log(chapterAbout);
 
             const updatedChapterInfo = {
                 id: course.id, // Send the course ID
@@ -52,11 +52,11 @@ function EditChapter({ course, index, onRefresh }: EditChapterProps) {
                 about: chapterAbout,
             };
 
-            console.log(updatedChapterInfo);
+            // console.log(updatedChapterInfo);
 
             const response = await axios.put(`/api/course/${course?.courseId}/updateChapter`, updatedChapterInfo);
 
-            console.log('Updated course:', response.data.updatedCourse);
+            // console.log('Updated course:', response.data.updatedCourse);
             onRefresh(true);
         }
         catch (error) {

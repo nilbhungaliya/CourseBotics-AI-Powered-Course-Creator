@@ -20,8 +20,8 @@ export default function UserCourseList() {
 
     useEffect(() => {
         // For debugging purposes
-        console.log({session});
-        console.log(status);
+        // console.log({session});
+        // console.log(status);
         
         if (status === 'loading') {
             // Session is still loading, don't do anything yet
@@ -39,7 +39,7 @@ export default function UserCourseList() {
         }
         
         if (status === 'unauthenticated') {
-            console.log("User is not authenticated");
+            // console.log("User is not authenticated");
             setIsLoading(false);
             // We'll handle this case in the dashboard page
         }
@@ -54,7 +54,7 @@ export default function UserCourseList() {
     const getUserCourses = async (email: string) => {
         setIsLoading(true);
         try {
-            console.log("Fetching courses for email:", email);
+            // console.log("Fetching courses for email:", email);
             const response = await axios.post("/api/getUserCourses", {
                 email,
             });

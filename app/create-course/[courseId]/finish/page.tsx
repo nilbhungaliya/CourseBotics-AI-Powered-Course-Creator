@@ -19,7 +19,7 @@ function Finish() {
   const COURSE_LINK = `${process.env.NEXT_PUBLIC_DOMAIN}/course/${course?.courseId}/start`;
 
   const getCourse = async () => {
-    console.log(param.courseId);
+    // console.log(param.courseId);
     const courseId = param.courseId;
 
     const res = await axios.post(`/api/course/${courseId}`, {
@@ -32,18 +32,18 @@ function Finish() {
 
     const data = res.data;
     // console.log(res);
-    console.log(data);
+    // console.log(data);
     setCourse(data as CourseType);
   };
 
   useEffect(() => {
     if (session?.user) {
-      console.log("user:", session.user);
+      // console.log("user:", session.user);
       if (param) {
         getCourse();
       }
     } else {
-      console.log("User is not authenticated");
+      // console.log("User is not authenticated");
     }
   }, [param, session?.user]);
 

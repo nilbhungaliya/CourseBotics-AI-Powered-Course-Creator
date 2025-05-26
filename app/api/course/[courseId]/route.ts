@@ -42,7 +42,7 @@ export const POST = async (req: NextRequest, args: any) => {
 export const PUT = async(req:NextRequest, args:any)=>{
   const body = await req.json();
   const { id, courseOutput } = body;
-  console.log(body);
+  // console.log(body);
 
   // Validate the input
   if (!id || !courseOutput || !courseOutput.topic || !courseOutput.description) {

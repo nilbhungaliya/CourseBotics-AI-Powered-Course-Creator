@@ -29,11 +29,11 @@ export const GenerateCourseLayout = async (
     let id = uuid4();
 
     const result = await generateCourseLayout_AI.sendMessage(FINAL_PROMT);
-    const data = JSON.parse(result.response?.text());
-    console.log(data);
+    const data = await JSON.parse(result.response?.text());
+    // console.log(data);
 
     const response = await storeDataInDatabase(id, userInput, data, user);
-    console.log(response);
+    // console.log(response);
 
     router.replace(`/create-course/${id}`);
   } catch (error) {
