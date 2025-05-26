@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import db from "@/db";
 import { InputJsonValue, JsonValue } from '@prisma/client/runtime/library';
 
+export const runtime = 'nodejs'
+
 
 export const PUT = async (req: NextRequest, args: any) => {
   const body = await req.json();

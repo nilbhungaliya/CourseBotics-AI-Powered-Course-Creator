@@ -1,6 +1,8 @@
 import db from "@/db";
 import { NextRequest, NextResponse } from "next/server";
 
+export const runtime = 'nodejs'
+
 export const POST = async (req: NextRequest, args: any) => {
   try {
     const courseId = await args.params.courseId;

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import db from "@/db"
 import { log } from "node:console";
 
+export const runtime = 'nodejs'
+
 export const POST = async (req: NextRequest) => {
     try {
 

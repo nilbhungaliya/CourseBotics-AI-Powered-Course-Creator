@@ -25,6 +25,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import cloudinary from "@/configs/cloudinary";
 
+
+export const runtime = 'nodejs'
+
 export async function POST(req: NextRequest) {
   try {
     const { file } = await req.json();
