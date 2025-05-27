@@ -41,19 +41,24 @@ function StartCourse() {
   // Check if we're on mobile
   useEffect(() => {
     const checkIfMobile = () => {
-      const mobile = window.innerWidth < 768;
-      setIsMobile(mobile);
-      if (mobile) {
-        setSidebarOpen(false);
+      if (typeof window !== 'undefined') {
+        const mobile = window.innerWidth < 768;
+        setIsMobile(mobile);
+        if (mobile) {
+          setSidebarOpen(false);
+        }
       }
     };
     
     checkIfMobile();
-    window.addEventListener('resize', checkIfMobile);
     
-    return () => {
-      window.removeEventListener('resize', checkIfMobile);
-    };
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', checkIfMobile);
+      
+      return () => {
+        window.removeEventListener('resize', checkIfMobile);
+      };
+    }
   }, []);
 
   useEffect(() => {
@@ -148,10 +153,10 @@ function StartCourse() {
       <AnimatePresence mode="wait">
         {sidebarOpen && (
           <motion.div 
-            className="fixed md:relative z-50 md:z-auto w-[300px] md:w-80 h-screen bg-background border-r shadow-lg md:shadow-none"
-            initial={{ x: -300 }}
-            animate={{ x: 0 }}
-            exit={{ x: -300 }}
+            className="fixed md:relative z-50 md:z-auto w-[300px] md:w-80 h-screen bg-background border-r shadow-lg md:shadow-none overflow-hidden"
+            initial={{ x: -300, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: -300, opacity: 0 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
           >
             <div className="flex flex-col h-full">
@@ -253,10 +258,13 @@ function StartCourse() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => setSidebarOpen(!sidebarOpen)}
+            onClick={() => {
+              setSidebarOpen(!sidebarOpen);
+            }}
             className="mr-2"
+            aria-label={sidebarOpen ? "Close sidebar" : "Open sidebar"}
           >
-            <Menu className="h-5 w-5" />
+            {sidebarOpen ? <ChevronLeft className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             <span className="sr-only">Toggle sidebar</span>
           </Button>
           

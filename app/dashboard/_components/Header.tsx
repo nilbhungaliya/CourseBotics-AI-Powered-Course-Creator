@@ -14,6 +14,7 @@ import {
   Award,
   MessageSquare,
   Loader2,
+  ChevronLeft,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -229,10 +230,12 @@ export default function Header({ toggleSidebar, isSidebarOpen }: HeaderProps) {
               variant="ghost"
               size="icon"
               className="rounded-full relative z-50"
-              onClick={toggleSidebar}
+              onClick={() => {
+                if (toggleSidebar) toggleSidebar();
+              }}
               aria-label={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
             >
-              <Menu className="h-5 w-5" />
+              {isSidebarOpen ? <ChevronLeft className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               <span className="sr-only">Toggle sidebar</span>
             </Button>
           </motion.div>
