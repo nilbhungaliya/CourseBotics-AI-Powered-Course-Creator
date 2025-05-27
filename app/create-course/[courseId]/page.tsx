@@ -51,31 +51,53 @@ function CoursePageLayout() {
     if (!course) return null;
 
     const handleGenerateCourseContent = async () => {
-        setLoading(true)
-        const courseId = param.courseId;
-        console.log({course});
-        const Chapterdata = await GenerateCourseContent(course, setLoading);
-        console.log({Chapterdata});
+        try {
+            setLoading(true);
+            const courseId = param.courseId;
+            console.log({course});
+            
+            // Generate course content
+            const Chapterdata = await GenerateCourseContent(course, () => {
+                // Override the setLoading from GenerateCourseContent to keep our loading state true
+                // This ensures the loader stays visible throughout the entire process
+            });
+            console.log({Chapterdata});
 
-        const res = await axios.patch(`/api/course/${courseId}`, {
-            isPublished: true,
-            user: { email: session?.user?.email },
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
+            if (Chapterdata.error) {
+                throw new Error("Failed to generate course content");
             }
-        });
-        const data = res.data;
-        // console.log(data);
-        setLoading(false);
-        router.replace(`/create-course/${param.courseId}/finish`);
+
+            // Mark course as published
+            const res = await axios.patch(`/api/course/${courseId}`, {
+                isPublished: true,
+                user: { email: session?.user?.email },
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            const data = res.data;
+            // console.log(data);
+            
+            // Navigate to finish page
+            router.replace(`/create-course/${param.courseId}/finish`);
+        } catch (error) {
+            console.error("Error generating course content:", error);
+            alert("There was an error generating your course content. Please try again.");
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
         <div className="pt-8 px-7 md:px-20 lg:px-44">
             <h2 className="font-bold text-center text-2xl text-purple-900">Course Layout</h2>
 
-            <LoadingDialog loading={loading} />
+            <LoadingDialog 
+                loading={loading} 
+                description="Generating Your Course Content"
+            />
 
             <CourseBasicInfo courseInfo={course} onRefresh={() => getCourse()} />
 

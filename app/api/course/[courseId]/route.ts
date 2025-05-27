@@ -6,7 +6,7 @@ export const runtime = 'nodejs'
 
 export const POST = async (req: NextRequest, args: any) => {
   try {
-    const courseId = await args.params.courseId;
+    const courseId = args.params.courseId;
     // console.log("Received courseId:", courseId);
     // Parse the incoming request body
     const body = await req.json();
@@ -86,7 +86,7 @@ export const PUT = async(req:NextRequest, args:any)=>{
 
 export const PATCH = async (req: NextRequest, args:any) => {
     try {
-      const courseId = await args.params.courseId;
+      const courseId = args.params.courseId;
       const body = await req.json();
       const { user, isPublished } = body;
   
