@@ -45,13 +45,17 @@ export default function SideBar() {
   // Function to close sidebar on mobile when clicking a link
   const closeSidebarOnMobile = () => {
     if (isMobile) {
-      // Get the sidebar state from localStorage
-      const sidebarOpen = localStorage.getItem('dashboardSidebarOpen');
-      if (sidebarOpen === 'true') {
-        // Update localStorage
-        localStorage.setItem('dashboardSidebarOpen', 'false');
-        // Dispatch a custom event to notify the layout
-        window.dispatchEvent(new Event('sidebarStateChanged'));
+      try {
+        // Get the sidebar state from localStorage
+        const sidebarOpen = localStorage.getItem('dashboardSidebarOpen');
+        if (sidebarOpen === 'true') {
+          // Update localStorage
+          localStorage.setItem('dashboardSidebarOpen', 'false');
+          // Dispatch a custom event to notify the layout
+          window.dispatchEvent(new CustomEvent('sidebarStateChanged'));
+        }
+      } catch (error) {
+        console.error('Error handling sidebar state:', error);
       }
     }
   };
@@ -89,8 +93,12 @@ export default function SideBar() {
             size="icon" 
             className="md:hidden"
             onClick={() => {
-              localStorage.setItem('dashboardSidebarOpen', 'false');
-              window.dispatchEvent(new Event('sidebarStateChanged'));
+              try {
+                localStorage.setItem('dashboardSidebarOpen', 'false');
+                window.dispatchEvent(new CustomEvent('sidebarStateChanged'));
+              } catch (error) {
+                console.error('Error closing sidebar:', error);
+              }
             }}
           >
             <X className="h-5 w-5" />

@@ -22,33 +22,51 @@ export default function DashboardLayout({
 
   // Initialize sidebar state from localStorage on component mount
   useEffect(() => {
-    setIsMounted(true);
-    const savedSidebarState = localStorage.getItem('dashboardSidebarOpen');
-    if (savedSidebarState !== null) {
-      setIsSidebarOpen(savedSidebarState === 'true');
+    if (typeof window !== 'undefined') {
+      setIsMounted(true);
+      try {
+        const savedSidebarState = localStorage.getItem('dashboardSidebarOpen');
+        if (savedSidebarState !== null) {
+          setIsSidebarOpen(savedSidebarState === 'true');
+        }
+      } catch (error) {
+        console.error('Error accessing localStorage:', error);
+      }
     }
   }, []);
 
   // Save sidebar state to localStorage whenever it changes
   useEffect(() => {
-    if (isMounted) {
-      localStorage.setItem('dashboardSidebarOpen', isSidebarOpen.toString());
+    if (isMounted && typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('dashboardSidebarOpen', isSidebarOpen.toString());
+      } catch (error) {
+        console.error('Error writing to localStorage:', error);
+      }
     }
   }, [isSidebarOpen, isMounted]);
   
   // Listen for custom event to update sidebar state
   useEffect(() => {
     const handleSidebarStateChanged = () => {
-      const savedSidebarState = localStorage.getItem('dashboardSidebarOpen');
-      if (savedSidebarState !== null) {
-        setIsSidebarOpen(savedSidebarState === 'true');
+      if (typeof window !== 'undefined') {
+        try {
+          const savedSidebarState = localStorage.getItem('dashboardSidebarOpen');
+          if (savedSidebarState !== null) {
+            setIsSidebarOpen(savedSidebarState === 'true');
+          }
+        } catch (error) {
+          console.error('Error reading from localStorage:', error);
+        }
       }
     };
     
-    window.addEventListener('sidebarStateChanged', handleSidebarStateChanged);
-    return () => {
-      window.removeEventListener('sidebarStateChanged', handleSidebarStateChanged);
-    };
+    if (typeof window !== 'undefined') {
+      window.addEventListener('sidebarStateChanged', handleSidebarStateChanged);
+      return () => {
+        window.removeEventListener('sidebarStateChanged', handleSidebarStateChanged);
+      };
+    }
   }, []);
 
   // Reset scroll position when pathname changes
