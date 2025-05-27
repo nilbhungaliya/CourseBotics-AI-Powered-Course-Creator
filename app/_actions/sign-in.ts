@@ -13,6 +13,7 @@ import { SignInSchema, SignInType } from "@/schemas/SignInSchema";
 import { AuthError } from "next-auth";
 import prisma from "@/db";
 import { getTwoFactorConfirmationByUserId } from "@/data/two-factor-confirmation";
+import bcrypt from "bcryptjs";
 
 export const signInAction = async (values: SignInType) => {
   // console.log({ values });
@@ -34,6 +35,13 @@ export const signInAction = async (values: SignInType) => {
   if (!existingUser || !existingUser.email || !existingUser.password) {
     return { error: "Email does not exist" };
   }
+
+  const passwordMatch = await bcrypt.compare(
+    data.password,
+    existingUser.password
+  );
+
+  if (!passwordMatch) return { error: "Invalid credentials!" };
 
   if (!existingUser.emailVerified) {
     const varificationToken = await generateVarificationToken(
@@ -71,23 +79,28 @@ export const signInAction = async (values: SignInType) => {
         },
       });
 
-      const existingConfirmation = await getTwoFactorConfirmationByUserId(existingUser.id);
+      const existingConfirmation = await getTwoFactorConfirmationByUserId(
+        existingUser.id
+      );
       if (existingConfirmation) {
         await prisma.twoFactorConfirmation.delete({
           where: {
             id: existingConfirmation.id,
           },
-        })
+        });
       }
 
       await prisma.twoFactorConfirmation.create({
         data: {
           userId: existingUser.id,
         },
-      })
+      });
     } else {
       const twoFactorToken = await generateTwoFactorToken(existingUser.email);
-      await sendTwoFactorEmail(twoFactorToken.email, twoFactorToken.token);
+      await sendTwoFactorEmail(
+        twoFactorToken.email,
+        twoFactorToken.token
+      );
       return {
         twoFactor: true,
       };
