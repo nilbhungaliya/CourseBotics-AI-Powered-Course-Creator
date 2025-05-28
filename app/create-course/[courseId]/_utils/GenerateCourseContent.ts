@@ -40,12 +40,21 @@ export const GenerateCourseContent = async (
           };
         } catch (error) {
           console.error(`Error in processing chapter ${index}:`, error);
-          return {error};
+          // Return a properly structured object with error flag
+          return {
+            chapterId: index,
+            courseId: course.courseId,
+            content: null,
+            videoId: null,
+            error: true,
+            errorMessage: error instanceof Error ? error.message : 'Unknown error'
+          };
         }
       })
     );
 
-    const validChapters = processedChapters.filter((chapter) => chapter !== null);
+    // Filter out chapters with errors
+    const validChapters = processedChapters.filter((chapter) => !chapter.error && chapter.content && chapter.videoId);
 
     // console.log(validChapters);
     
