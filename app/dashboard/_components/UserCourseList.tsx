@@ -43,7 +43,7 @@ export default function UserCourseList() {
             setIsLoading(false);
             // We'll handle this case in the dashboard page
         }
-    }, [status, session, hasLoaded]);
+    }, [status, session, hasLoaded, courses]);
 
     const refreshCourses = () => {
         if (status === 'authenticated' && session?.user?.email) {
