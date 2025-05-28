@@ -84,7 +84,7 @@ export default function UserCourseList() {
         }
     };
 
-    if (courses?.length === 0) {
+    if (!courses) {
         return (
             <motion.div 
                 className="flex flex-col items-center justify-center mt-20 p-10 text-center"
