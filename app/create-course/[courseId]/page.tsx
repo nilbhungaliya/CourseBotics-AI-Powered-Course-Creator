@@ -54,19 +54,30 @@ function CoursePageLayout() {
         try {
             setLoading(true);
             const courseId = param.courseId;
-            console.log({course});
+            console.log("Starting course content generation for:", {course});
             
             // Generate course content
-            const Chapterdata = await GenerateCourseContent(course, () => {
+            const chapterData = await GenerateCourseContent(course, () => {
                 // Override the setLoading from GenerateCourseContent to keep our loading state true
                 // This ensures the loader stays visible throughout the entire process
             });
-            console.log({Chapterdata});
+            
+            console.log("Chapter data generated:", chapterData);
 
-            if (Chapterdata.error) {
-                throw new Error("Failed to generate course content");
+            // Check if we have a successful response
+            if (!chapterData || chapterData.error) {
+                console.error("Error in chapter data:", chapterData?.error);
+                throw new Error(chapterData?.error?.message || "Failed to generate course content");
             }
 
+            // Check if we have any valid chapters
+            if (!chapterData.success) {
+                console.error("No chapters were successfully processed");
+                throw new Error("No chapters were successfully processed");
+            }
+
+            console.log("Marking course as published");
+            
             // Mark course as published
             const res = await axios.patch(`/api/course/${courseId}`, {
                 isPublished: true,
@@ -78,13 +89,24 @@ function CoursePageLayout() {
             });
             
             const data = res.data;
-            // console.log(data);
+            console.log("Course published successfully:", data);
             
             // Navigate to finish page
+            console.log("Navigating to finish page");
             router.replace(`/create-course/${param.courseId}/finish`);
-        } catch (error) {
+        } catch (error: any) {
             console.error("Error generating course content:", error);
-            alert("There was an error generating your course content. Please try again.");
+            
+            // Provide more detailed error message to the user
+            let errorMessage = "There was an error generating your course content. Please try again.";
+            
+            if (error?.response?.data?.error) {
+                errorMessage += "\n\nDetails: " + error.response.data.error;
+            } else if (error?.message) {
+                errorMessage += "\n\nDetails: " + error.message;
+            }
+            
+            alert(errorMessage);
         } finally {
             setLoading(false);
         }
