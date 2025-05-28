@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { stepperOptions } from './_constants/stepperOptions'
 import { FaWandMagicSparkles } from 'react-icons/fa6';
 import { Button } from '@/components/ui/button';
@@ -7,14 +7,9 @@ import SelectCategory from './_components/SelectCategory';
 import TopicDesc from './_components/TopicDesc';
 import SelectOption from './_components/SelectOption';
 import { UserInputContext } from '../_context/UserInputContext';
-import { generateCourseLayout_AI } from '@/configs/AiModel';
 import LoadingDialog from './_components/LoadingDialog';
-import { CourseType, UserInputType } from '@/types/types';
-import uuid4 from "uuid4";
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
-import { storeDataInDatabase } from './_utils/StoreDataInDatabase';
 import { GenerateCourseLayout } from './_utils/GenerateCourseLayout';
 
 function CreateCourse() {
@@ -23,11 +18,6 @@ function CreateCourse() {
   const [loading, setLoading] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
-
-  useEffect(() => {
-    console.log(userInput);
-
-  }, [userInput]);
 
   const allowNextStep = () => {
     if (step === 0) {
