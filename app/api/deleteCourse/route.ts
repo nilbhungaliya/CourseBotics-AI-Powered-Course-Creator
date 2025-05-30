@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import db from "@/db"
+import db from "@/lib/db"
 import { log } from "node:console";
 
 export const runtime = 'nodejs'

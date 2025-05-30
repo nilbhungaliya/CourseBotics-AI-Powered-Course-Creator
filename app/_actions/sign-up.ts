@@ -1,7 +1,7 @@
 "use server"
 import { SignUpSchema, SignUpType } from "@/schemas/SignUpSchema";
 import bcrypt from "bcryptjs";
-import prisma from "@/db";
+import prisma from "@/lib/db";
 import { getUserByEmail } from "@/data/user";
 import { sendverificationEmail } from "@/lib/mail";
 import { generateVerificationToken } from "@/lib/tokens";

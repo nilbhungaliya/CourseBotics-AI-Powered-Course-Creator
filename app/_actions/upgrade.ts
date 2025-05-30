@@ -1,7 +1,7 @@
 'use server'
 
 import { auth } from '@/auth'
-import { db } from '@/lib/db'
+import prisma from '@/lib/db'
 import { SubscriptionStatus, SubscriptionPlan } from '@prisma/client'
 
 export const upgradeUser = async (orderId: string, paymentId: string) => {
@@ -15,7 +15,7 @@ export const upgradeUser = async (orderId: string, paymentId: string) => {
     const endDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 days from now
 
     // Update user's subscription status in the database
-    await db.user.update({
+    await prisma.user.update({
       where: {
         id: session.user.id,
       },
@@ -58,7 +58,7 @@ export const checkSubscriptionStatus = async () => {
       throw new Error('Unauthorized')
     }
 
-    const user = await db.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         id: session.user.id,
       },
@@ -75,7 +75,7 @@ export const checkSubscriptionStatus = async () => {
     
     if (!isActive && user.subscription?.status === SubscriptionStatus.ACTIVE) {
       // Update subscription status if it has expired
-      await db.subscription.update({
+      await prisma.subscription.update({
         where: {
           userId: user.id,
         },

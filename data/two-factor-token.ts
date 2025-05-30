@@ -1,4 +1,4 @@
-import prisma from "@/db";
+import prisma from "@/lib/db";
 
 export const getTwoFactorTokenByEmail = async (email: string) => {
   try {

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import db from "@/db" // Ensure this is correctly set up
+import db from "@/lib/db" // Ensure this is correctly set up
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'; // Add this at the top of your file
