@@ -8,7 +8,7 @@ const baseUrl = process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
     : process.env.NEXT_PUBLIC_APP_DOMAIN;
 
-const VarificationEmail = ({ data = PropDefaults }) => {
+const verificationEmail = ({ data = PropDefaults }) => {
     return (
         <EmailLayout
             preview={"Confirm your email address by just click this url!"}
@@ -16,7 +16,7 @@ const VarificationEmail = ({ data = PropDefaults }) => {
             <Container className="py-4">
                 <Section className="mb-4 max-w-lg flex flex-col items-center">
                     <Heading className="text-3xl mt-0 font-semibold text-center">
-                        Email varification
+                        Email verification
                     </Heading>
                 </Section>
                 <Section className="flex items-center justify-center bg-gray-200 p-6 rounded">
@@ -38,4 +38,4 @@ const VarificationEmail = ({ data = PropDefaults }) => {
     );
 };
 
-export default VarificationEmail;
+export default verificationEmail;

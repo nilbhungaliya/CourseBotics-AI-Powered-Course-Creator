@@ -53,7 +53,7 @@ export function UserButton() {
             <Avatar className="h-9 w-9">
               {session.user.image ? (
                 <AvatarImage
-                  src={session.user.image || ""}
+                  src={session.user.image}
                   alt={session.user.name || "User"}
                 />
               ) : (

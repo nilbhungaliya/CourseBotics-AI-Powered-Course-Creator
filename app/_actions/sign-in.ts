@@ -3,10 +3,10 @@
 import { signIn } from "@/auth";
 import { getTwoFactorTokenByEmail } from "@/data/two-factor-token";
 import { getUserByEmail } from "@/data/user";
-import { sendTwoFactorEmail, sendVarificationEmail } from "@/lib/mail";
+import { sendTwoFactorEmail, sendverificationEmail } from "@/lib/mail";
 import {
   generateTwoFactorToken,
-  generateVarificationToken,
+  generateVerificationToken,
 } from "@/lib/tokens";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { SignInSchema, SignInType } from "@/schemas/SignInSchema";
@@ -44,12 +44,13 @@ export const signInAction = async (values: SignInType) => {
   if (!passwordMatch) return { error: "Invalid credentials!" };
 
   if (!existingUser.emailVerified) {
-    const varificationToken = await generateVarificationToken(
-      existingUser.email
+    const verificationToken = await generateVerificationToken(
+      existingUser.email,
+      existingUser.id
     );
-    await sendVarificationEmail(
-      varificationToken.email,
-      varificationToken.token
+    await sendverificationEmail(
+      verificationToken.email,
+      verificationToken.token
     );
     return {
       success: "Confirmation email sent successfully! Please check your inbox.",

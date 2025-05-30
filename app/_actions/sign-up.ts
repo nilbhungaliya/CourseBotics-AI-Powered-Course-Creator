@@ -3,8 +3,8 @@ import { SignUpSchema, SignUpType } from "@/schemas/SignUpSchema";
 import bcrypt from "bcryptjs";
 import prisma from "@/db";
 import { getUserByEmail } from "@/data/user";
-import { generateVarificationToken } from "@/lib/tokens";
-import { sendVarificationEmail } from "@/lib/mail";
+import { sendverificationEmail } from "@/lib/mail";
+import { generateVerificationToken } from "@/lib/tokens";
 
 export const signUpAction = async (values: SignUpType) => {
   try {
@@ -28,7 +28,7 @@ export const signUpAction = async (values: SignUpType) => {
 
     const name = `${firstName} ${lastName}`;
 
-    await prisma.user.create({
+    const user = await prisma.user.create({
       data:{
         email,
         password:hashPassword,
@@ -36,9 +36,9 @@ export const signUpAction = async (values: SignUpType) => {
       }
     })
 
-    const varificationToken = await generateVarificationToken(email);
+    const verificationToken = await generateVerificationToken(email, user.id);
 
-    await sendVarificationEmail(varificationToken.email, varificationToken.token);
+    await sendverificationEmail(verificationToken.email, verificationToken.token);
 
     return {
       success: "Confirmation email sent successfully! Please check your inbox.",

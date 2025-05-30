@@ -220,14 +220,14 @@ export default function Page() {
                         <FormItem>
                           <FormLabel>First name</FormLabel>
                           <FormControl>
-                            <div className="relative text-slate-900 dark:text-white bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                            <div className="relative">
                               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <User className="h-4 w-4 text-slate-400" />
                               </div>
                               <Input
                                 placeholder="John"
                                 {...field}
-                                className="pl-10"
+                                className="block w-full pl-10 py-2.5 text-slate-900 dark:text-white bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary"
                               />
                             </div>
                           </FormControl>
@@ -243,14 +243,14 @@ export default function Page() {
                         <FormItem>
                           <FormLabel>Last name</FormLabel>
                           <FormControl>
-                            <div className="relative text-slate-900 dark:text-white bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                            <div className="relative">
                               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <User className="h-4 w-4 text-slate-400" />
                               </div>
                               <Input
                                 placeholder="Doe"
                                 {...field}
-                                className="pl-10"
+                                className="block w-full pl-10 py-2.5 text-slate-900 dark:text-white bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary"
                               />
                             </div>
                           </FormControl>
@@ -267,14 +267,14 @@ export default function Page() {
                       <FormItem>
                         <FormLabel>Email address</FormLabel>
                         <FormControl>
-                          <div className="relative text-slate-900 dark:text-white bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                          <div className="relative">
                             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                               <Mail className="h-4 w-4 text-slate-400" />
                             </div>
                             <Input
                               placeholder="name@example.com"
                               {...field}
-                              className="pl-10"
+                              className="block w-full pl-10 py-2.5 text-slate-900 dark:text-white bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary"
                             />
                           </div>
                         </FormControl>
@@ -290,7 +290,7 @@ export default function Page() {
                       <FormItem>
                         <FormLabel>Password</FormLabel>
                         <FormControl>
-                          <div className="relative text-slate-900 dark:text-white bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                          <div className="relative">
                             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                               <Lock className="h-4 w-4 text-slate-400" />
                             </div>
@@ -298,7 +298,7 @@ export default function Page() {
                               type={showPassword ? "text" : "password"}
                               placeholder="••••••••"
                               {...field}
-                              className="pl-10 pr-10"
+                              className="block w-full pl-10 pr-10 py-2.5 text-slate-900 dark:text-white bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary"
                             />
                             <button
                               type="button"
