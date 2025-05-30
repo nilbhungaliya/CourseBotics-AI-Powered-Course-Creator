@@ -22,6 +22,8 @@ export default function DashboardPage() {
   // Auto-refresh once when the page loads after login
   useEffect(() => {
     // Only run this effect on the client side
+    console.log({session});
+    
     if (!isClient) return;
     
     // If URL contains login=success and we haven't refreshed yet

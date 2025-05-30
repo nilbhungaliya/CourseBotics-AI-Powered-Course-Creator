@@ -27,6 +27,10 @@ model User {
   twoFactorComfirmation TwoFactorConfirmation?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  isPro         Boolean   @default(false)
+  proExpiresAt  DateTime?
+  subscription  Subscription?
+  verificationTokens verificationToken[]
 
   @@map("users")
 }
@@ -67,11 +71,13 @@ model Account {
   @@map("accounts")
 }
 
-model varificationToken{
+model verificationToken{
   id String @id @default(cuid())
   email String @unique
   token String @unique
   expires DateTime
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([email, token])
 }
@@ -103,8 +109,6 @@ model TwoFactorConfirmation{
   @@unique([userId])
 }
 
-
-
 model CourseList {
   id               Int              @id @default(autoincrement())
   courseId         String           @unique @db.VarChar
@@ -131,4 +135,31 @@ model CourseChapters {
   CourseList CourseList @relation(fields: [courseId], references: [courseId], onDelete: Cascade)
 
   @@unique([courseId, chapterId]) // Ensure that each chapterId is unique per course
+}
+
+model Subscription {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status          SubscriptionStatus @default(ACTIVE)
+  plan            SubscriptionPlan @default(PRO)
+  startDate       DateTime @default(now())
+  endDate         DateTime
+  paypalOrderId   String?
+  paypalPaymentId String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("subscriptions")
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+}
+
+enum SubscriptionPlan {
+  FREE
+  PRO
 }

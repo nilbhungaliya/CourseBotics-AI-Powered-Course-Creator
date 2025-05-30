@@ -57,8 +57,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       return token;
     },
     async session({ token, session }) {
-      // console.log(token);
-
       if (token.sub && session.user) {
         session.user.id = token.sub as string;
       }
@@ -66,7 +64,21 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       if (token.role && session.user) {
         session.user.role = token.role as Role;
       }
-      // console.log({session});
+
+      if (session.user) {
+        const existingUser = await getUserById(token.sub as string);
+        if (existingUser) {
+          session.user.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
+          
+          // Get the provider from the user's accounts
+          const account = await prisma.account.findFirst({
+            where: { userId: existingUser.id },
+            select: { provider: true }
+          });
+          
+          session.user.provider = account?.provider;
+        }
+      }
 
       return session;
     },

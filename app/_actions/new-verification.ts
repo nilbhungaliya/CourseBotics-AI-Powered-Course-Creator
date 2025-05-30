@@ -1,10 +1,10 @@
 "use server";
 import { getUserByEmail } from "@/data/user";
-import { getVarificationTokenByToken } from "@/data/varification-token";
+import { getVerificationTokenByToken } from "@/data/verification-token";
 import prisma from "@/db";
 
 export const newVerificationAction = async (token: string) => {
-  const existingToken = await getVarificationTokenByToken(token);
+  const existingToken = await getVerificationTokenByToken(token);
 
   if (!existingToken) {
     return { error: "Invalid token!" };
@@ -27,7 +27,7 @@ export const newVerificationAction = async (token: string) => {
     data: { emailVerified: new Date(), email: existingToken.email },
   });
 
-  await prisma.varificationToken.deleteMany({
+  await prisma.verificationToken.deleteMany({
     where: { email: existingToken.email },
   });
 

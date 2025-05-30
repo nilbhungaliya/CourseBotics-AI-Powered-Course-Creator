@@ -1,4 +1,4 @@
-import { getVarificationTokenByEmail } from "@/data/varification-token";
+import { getVerificationTokenByEmail } from "@/data/verification-token";
 import { v4 as uuidv4 } from "uuid";
 import prisma from "@/db";
 import { getPasswordResetTokenByEmail } from "@/data/password-reset-token";
@@ -6,29 +6,28 @@ import crypto from "crypto"
 import { getTwoFactorTokenByEmail } from "@/data/two-factor-token";
 
 
-export const generateVarificationToken = async (email: string) => {
+export const generateVerificationToken = async (email: string, userId: string) => {
   const token = uuidv4();
-  const expires = new Date(new Date().getTime() + 3600 * 1000);
+  const expires = new Date(new Date().getTime() + 24 * 60 * 60 * 1000); // 24 hours
 
-  const existingToken = await getVarificationTokenByEmail(email);
+  const existingToken = await getVerificationTokenByEmail(email);
 
   if (existingToken) {
-    await prisma.varificationToken.delete({
-      where: {
-        id: existingToken.id,
-      },
+    await prisma.verificationToken.delete({
+      where: { id: existingToken.id },
     });
   }
 
-  const varificationToken = await prisma.varificationToken.create({
+  const verificationToken = await prisma.verificationToken.create({
     data: {
       email,
       token,
       expires,
+      userId,
     },
   });
 
-  return varificationToken;
+  return verificationToken;
 };
 
 export const generateResetPasswordToken = async (email: string) => {

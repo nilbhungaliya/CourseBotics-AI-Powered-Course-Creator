@@ -20,8 +20,8 @@ export const reset = async (values: ResetType) => {
     return { error: "Email does not exist" };
   }
 
-  const varificationToken = await generateResetPasswordToken(existingUser.email);
-  await sendResendPasswordEmail(varificationToken.email, varificationToken.token);
+  const verificationToken = await generateResetPasswordToken(existingUser.email);
+  await sendResendPasswordEmail(verificationToken.email, verificationToken.token);
 
   return { success: "Email sent successfully! Please check your inbox." };
 
