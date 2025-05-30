@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import db from "@/db";
+import db from "@/lib/db";
 import { InputJsonValue, JsonValue } from '@prisma/client/runtime/library';
 
 export const runtime = 'nodejs'

@@ -1,6 +1,6 @@
 import { getVerificationTokenByEmail } from "@/data/verification-token";
 import { v4 as uuidv4 } from "uuid";
-import prisma from "@/db";
+import prisma from "@/lib/db";
 import { getPasswordResetTokenByEmail } from "@/data/password-reset-token";
 import crypto from "crypto"
 import { getTwoFactorTokenByEmail } from "@/data/two-factor-token";

@@ -11,7 +11,7 @@ import {
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { SignInSchema, SignInType } from "@/schemas/SignInSchema";
 import { AuthError } from "next-auth";
-import prisma from "@/db";
+import prisma from "@/lib/db";
 import { getTwoFactorConfirmationByUserId } from "@/data/two-factor-confirmation";
 import bcrypt from "bcryptjs";
 

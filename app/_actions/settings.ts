@@ -1,7 +1,7 @@
 'use server'
 
 import { auth } from '@/auth'
-import prisma from '@/db'
+import prisma from '@/lib/db'
 import { z } from 'zod'
 import {sendEmailUpdateVerification } from '@/lib/mail'
 import { generateVerificationToken } from '@/lib/tokens'

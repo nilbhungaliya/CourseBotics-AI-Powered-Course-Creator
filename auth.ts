@@ -2,7 +2,7 @@ export const runtime = 'nodejs';
 import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import authConfig from "./auth.config";
-import prisma from "@/db";
+import prisma from "@/lib/db";
 import { getUserById } from "./data/user";
 import { Prisma, Role } from "@prisma/client";
 import { getTwoFactorConfirmationByUserId } from "./data/two-factor-confirmation";
@@ -69,6 +69,8 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         const existingUser = await getUserById(token.sub as string);
         if (existingUser) {
           session.user.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
+          session.user.isPro = existingUser.isPro;
+          session.user.createdAt = existingUser.createdAt;
           
           // Get the provider from the user's accounts
           const account = await prisma.account.findFirst({
