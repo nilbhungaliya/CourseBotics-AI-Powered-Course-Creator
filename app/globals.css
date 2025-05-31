@@ -125,3 +125,30 @@
     @apply rounded-lg border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
   }
 }
+
+@keyframes gradient-x {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-gradient-x {
+  animation: gradient-x 15s ease infinite;
+  background-size: 200% 200%;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
