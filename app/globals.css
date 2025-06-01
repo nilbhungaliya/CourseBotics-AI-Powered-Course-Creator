@@ -79,9 +79,60 @@
   * {
     @apply border-border;
   }
+  
+  html {
+    /* Ultra-smooth scrolling */
+    scroll-behavior: smooth;
+    scroll-padding-top: 0;
+    /* Optimize rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    /* Remove any potential scroll conflicts */
+    overflow-x: hidden;
+  }
+  
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+    /* Enhanced smooth scrolling */
+    scroll-behavior: smooth;
+    /* Better text rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Prevent horizontal scroll */
+    max-width: 100vw;
+  }
+  
+  /* Enhanced custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-background;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/20 rounded-full;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary/40;
+  }
+  
+  ::-webkit-scrollbar-thumb:active {
+    @apply bg-primary/50;
+  }
+  
+  /* Firefox scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--primary) / 0.2) transparent;
   }
 }
 
@@ -151,4 +202,183 @@
 
 .animate-spin-slow {
   animation: spin-slow 8s linear infinite;
+}
+
+/* Performance optimizations */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* Smooth transitions for all interactive elements */
+.smooth-transition {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Loading animations */
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Advanced smooth scrolling utilities */
+.ultra-smooth-scroll {
+  scroll-behavior: smooth;
+  scroll-padding-top: 0;
+  /* Enhanced momentum scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
+  /* Optimize scroll performance */
+  overscroll-behavior: contain;
+}
+
+/* Scroll snap for smooth section transitions */
+.scroll-snap-y {
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+.scroll-snap-start {
+  scroll-snap-align: start;
+}
+
+.scroll-snap-center {
+  scroll-snap-align: center;
+}
+
+/* Smooth section transitions */
+.smooth-section {
+  /* Smooth transitions */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Enhanced momentum scrolling */
+.momentum-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+}
+
+/* Smooth page transitions */
+.page-transition {
+  /* GPU acceleration */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  /* Optimize performance */
+  will-change: transform, opacity;
+  /* Smooth transitions */
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Ultra-smooth scrolling optimizations */
+@supports (scroll-behavior: smooth) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Enhanced scrolling for modern browsers */
+@supports (overscroll-behavior: contain) {
+  html, body {
+    overscroll-behavior: contain;
+  }
+}
+
+/* CSS Scroll Snap for section navigation */
+.scroll-container {
+  scroll-snap-type: y proximity;
+  scroll-behavior: smooth;
+}
+
+.scroll-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+}
+
+/* Performance optimizations for smooth scrolling */
+.optimize-scroll {
+  /* Smooth momentum scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
+  
+  /* Better scroll performance */
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+}
+
+/* Smooth transitions for all interactive elements */
+.smooth-element {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .ultra-smooth-scroll,
+  .smooth-scroll-container,
+  .smooth-section {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Prevent multiple scrollbars */
+html, body {
+  overflow-x: hidden !important;
+  /* Ensure only one scrollbar */
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+/* Prevent any child elements from creating scrollbars */
+#__next, [data-nextjs-scroll-focus-boundary] {
+  overflow-x: hidden !important;
+  width: 100%;
+  max-width: 100vw;
+}
+
+/* Ensure main content doesn't overflow */
+main {
+  overflow-x: hidden !important;
+  width: 100%;
+  max-width: 100vw;
+}
+
+/* Prevent any absolute/fixed positioned elements from causing overflow */
+* {
+  box-sizing: border-box;
+}
+
+.fixed, .absolute {
+  max-width: 100vw !important;
+}
+
+/* Ensure no element can cause horizontal scroll */
+body * {
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
