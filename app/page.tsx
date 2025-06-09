@@ -24,8 +24,8 @@ export default function Home() {
 
   // Initialize smooth scrolling
   useSmoothScroll({
-    duration: 800,
-    easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+    duration: 1200,
+    easing: "cubic-bezier(0.23, 1, 0.32, 1)",
     offset: 0,
   });
 
@@ -256,34 +256,44 @@ export default function Home() {
             {/* Main content */}
             <div className="relative">
               <motion.div
-                initial={{ y: 20, opacity: 0 }}
+                initial={{ y: 30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
+                transition={{ 
+                  duration: 1.2, 
+                  delay: 0.2,
+                  ease: [0.23, 1, 0.32, 1]
+                }}
+                style={{ willChange: "transform, opacity" }}
               >
                 <Header />
               </motion.div>
 
               <motion.div
-                initial={{ y: 30, opacity: 0 }}
+                initial={{ y: 40, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
+                transition={{ 
+                  duration: 1.4, 
+                  delay: 0.4,
+                  ease: [0.23, 1, 0.32, 1]
+                }}
+                style={{ willChange: "transform, opacity" }}
               >
                 <Hero />
               </motion.div>
 
-              <LazySection delay={0.1} threshold={0.2}>
+              <LazySection delay={0.2} threshold={0.15}>
                 <Features />
               </LazySection>
 
-              <LazySection delay={0.1} threshold={0.2}>
+              <LazySection delay={0.2} threshold={0.15}>
                 <FAQ />
               </LazySection>
 
-              <LazySection delay={0.1} threshold={0.2}>
+              <LazySection delay={0.2} threshold={0.15}>
                 <CTA />
               </LazySection>
 
-              <LazySection delay={0.1} threshold={0.2}>
+              <LazySection delay={0.2} threshold={0.15}>
                 <Footer />
               </LazySection>
             </div>
