@@ -1,7 +1,6 @@
-version: '3.8'
-
 services:
   app:
+    image: nilbhungaliya11/Coursebotics:latest
     build:
       context: .
       target: development
@@ -26,3 +25,30 @@ services:
       - RESEND_API_KEY=${RESEND_API_KEY}
       - FROM_EMAIL_ADDRESS=${FROM_EMAIL_ADDRESS}
     restart: unless-stopped
+
+  # Production service (optional - for production deployment)
+  app-prod:
+    image: nilbhungaliya11/Coursebotics:latest
+    build:
+      context: .
+      target: production
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+      - NEXT_PUBLIC_GEMINI_API_KEY=${NEXT_PUBLIC_GEMINI_API_KEY}
+      - NEXT_PUBLIC_DOMAIN=${NEXT_PUBLIC_DOMAIN:-http://localhost:3001}
+      - NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=${NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}
+      - NEXT_PUBLIC_CLOUDINARY_API_KEY=${NEXT_PUBLIC_CLOUDINARY_API_KEY}
+      - NEXT_PUBLIC_CLOUDINARY_API_SECRET=${NEXT_PUBLIC_CLOUDINARY_API_SECRET}
+      - AUTH_SECRET=${AUTH_SECRET}
+      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
+      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - FROM_EMAIL_ADDRESS=${FROM_EMAIL_ADDRESS}
+    restart: unless-stopped
+    profiles:
+      - production

@@ -10,6 +10,7 @@ WORKDIR /app
 # Install dependencies in a separate layer for better caching
 FROM base AS deps
 COPY package.json package-lock.json* ./
+COPY prisma ./prisma
 
 # Install dependencies
 RUN npm ci
