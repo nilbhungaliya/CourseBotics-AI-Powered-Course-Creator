@@ -40,7 +40,7 @@ pipeline{
                     sh 'trivy fs --format table --output trivy-fs-report.html .'
                     
                     // Build Docker image for scanning
-                    sh 'docker build -t coursebotics-app:latest .'
+                    sh 'sudo docker build -t coursebotics-app:latest .'
                     
                     // Scan Docker image for vulnerabilities
                     sh 'trivy image --format table --output trivy-image-report.html coursebotics-app:latest'
@@ -52,7 +52,7 @@ pipeline{
             steps{
                 script{
                     // Deploy using docker-compose
-                    sh 'docker-compose up -d'
+                    sh 'sudo docker-compose up -d'
                 }
             }
         }
