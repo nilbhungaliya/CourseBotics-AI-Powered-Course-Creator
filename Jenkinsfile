@@ -1,73 +1,77 @@
-pipeline{
-    agent any 
-    environment{
-        SONAR_HOME = tool "Sonar"
+pipeline {
+    agent any
+    environment {
+        SONAR_HOME = tool 'Sonar'
         SUDO_PASSWORD = credentials('SUDO_PASSWORD')
     }
-    stages{
-        stage("Code Checkout"){
-            steps{
+    stages {
+        stage('Code Checkout') {
+            steps {
                 git branch: 'main', url: 'https://github.com/nilbhungaliya/CourseBotics-AI-Powered-Course-Creator.git'
             }
         }
-        
-        stage("SonarQube Analysis"){
-            steps{
-                withSonarQubeEnv("Sonar"){
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('Sonar') {
                     sh "${SONAR_HOME}/bin/sonar-scanner -Dsonar-projectName=CourseBotics-AI-Powered-Course-Creator -Dsonar.projectKey=CourseBotics-AI-Powered-Course-Creator"
                 }
             }
         }
 
-        stage("Sonar Quality Gate scan"){
-            steps{
-                timeout(time: 10, unit: 'MINUTES'){
+        stage('Sonar Quality Gate scan') {
+            steps {
+                timeout(time: 10, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: false
                 }
             }
         }
-        
-        stage("OWASP Dependency Check"){
-            steps{
+
+        stage('OWASP Dependency Check') {
+            steps {
                 dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'dc'
                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
             }
         }
-        
-        stage("Trivy Security Scan"){
-            steps{
-                script{
+
+        stage('Trivy Security Scan') {
+            steps {
+                script {
                     // Scan filesystem for vulnerabilities
                     sh 'trivy fs --format table --output trivy-fs-report.html .'
-                    
+
                     // Build Docker image for scanning
-                    sh 'echo "$SUDO_PASSWORD" | sudo -S docker build -t coursebotics-app:latest .'
-                    
+                    sh '''
+                        echo "$SUDO_PASSWORD" | sudo -S docker build -t coursebotics-app:latest .
+                    '''
+
                     // Scan Docker image for vulnerabilities
                     sh 'trivy image --format table --output trivy-image-report.html coursebotics-app:latest'
                 }
             }
         }
-        
-        stage("Deploy"){
-            steps{
-                script{
+
+        stage('Deploy') {
+            steps {
+                script {
                     // Deploy using docker-compose
-                    sh 'echo "$SUDO_PASSWORD" | sudo -S docker-compose up -d'
+                    sh '''
+                        echo "$SUDO_PASSWORD" | sudo -S docker-compose up -d
+                    '''
                 }
             }
         }
     }
-    
-    post{
-        always{
+
+    post {
+        always {
             // Archive security reports
             archiveArtifacts artifacts: '**/trivy-*.html, **/dependency-check-report.xml', allowEmptyArchive: true
         }
-        success{
+        success {
             echo 'Pipeline completed successfully!'
         }
-        failure{
+        failure {
             echo 'Pipeline failed!'
         }
     }
