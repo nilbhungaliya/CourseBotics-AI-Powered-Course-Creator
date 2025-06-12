@@ -2,6 +2,7 @@ pipeline{
     agent any 
     environment{
         SONAR_HOME = tool "Sonar"
+        SUDO_PASSWORD = credentials('SUDO_PASSWORD')
     }
     stages{
         stage("Code Checkout"){
