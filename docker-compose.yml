@@ -1,6 +1,5 @@
 services:
   app:
-    image: nilbhungaliya11/Coursebotics:latest
     build:
       context: .
       target: development

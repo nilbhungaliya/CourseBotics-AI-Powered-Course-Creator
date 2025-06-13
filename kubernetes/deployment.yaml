@@ -1,0 +1,164 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coursebotics-app
+  namespace: coursebotics
+  labels:
+    app: coursebotics
+    version: v1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: coursebotics
+  template:
+    metadata:
+      labels:
+        app: coursebotics
+        version: v1
+    spec:
+      serviceAccountName: coursebotics-sa
+      containers:
+        - name: coursebotics
+          image: nilbhungaliya11/coursebotics:v2
+          ports:
+            - containerPort: 3000
+              name: http
+          env:
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: coursebotics-config
+                  key: NODE_ENV
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: coursebotics-config
+                  key: PORT
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: coursebotics-secrets
+                  key: DATABASE_URL
+            - name: NEXT_PUBLIC_GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: coursebotics-secrets
+                  key: NEXT_PUBLIC_GEMINI_API_KEY
+            - name: NEXT_PUBLIC_DOMAIN
+              valueFrom:
+                secretKeyRef:
+                  name: coursebotics-secrets
+                  key: NEXT_PUBLIC_DOMAIN
+            - name: NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: coursebotics-secrets
+                  key: NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+            - name: NEXT_PUBLIC_CLOUDINARY_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: coursebotics-secrets
+                  key: NEXT_PUBLIC_CLOUDINARY_API_KEY
+            - name: NEXT_PUBLIC_CLOUDINARY_API_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: coursebotics-secrets
+                  key: NEXT_PUBLIC_CLOUDINARY_API_SECRET
+            - name: AUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: coursebotics-secrets
+                  key: AUTH_SECRET
+            - name: GITHUB_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: coursebotics-secrets
+                  key: GITHUB_CLIENT_ID
+            - name: GITHUB_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: coursebotics-secrets
+                  key: GITHUB_CLIENT_SECRET
+            - name: GOOGLE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: coursebotics-secrets
+                  key: GOOGLE_CLIENT_ID
+            - name: GOOGLE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: coursebotics-secrets
+                  key: GOOGLE_CLIENT_SECRET
+            - name: RESEND_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: coursebotics-secrets
+                  key: RESEND_API_KEY
+            - name: FROM_EMAIL_ADDRESS
+              valueFrom:
+                secretKeyRef:
+                  name: coursebotics-secrets
+                  key: FROM_EMAIL_ADDRESS
+            - name: NEXTAUTH_URL
+              valueFrom:
+                secretKeyRef:
+                  name: coursebotics-secrets
+                  key: NEXTAUTH_URL
+            - name: NEXTAUTH_URL_INTERNAL
+              valueFrom:
+                secretKeyRef:
+                  name: coursebotics-secrets
+                  key: NEXTAUTH_URL_INTERNAL
+            - name: NEXT_PUBLIC_YOUTUBE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: coursebotics-secrets
+                  key: NEXT_PUBLIC_YOUTUBE_API_KEY
+            - name: PAYPAL_API_URL
+              valueFrom:
+                secretKeyRef:
+                  name: coursebotics-secrets
+                  key: PAYPAL_API_URL
+            - name: PAYPAL_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: coursebotics-secrets
+                  key: PAYPAL_CLIENT_ID
+            - name: NEXT_PUBLIC_PAYPAL_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: coursebotics-secrets
+                  key: NEXT_PUBLIC_PAYPAL_CLIENT_ID
+            - name: PAYPAL_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: coursebotics-secrets
+                  key: PAYPAL_CLIENT_SECRET
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          imagePullPolicy: Always
+      imagePullSecrets:
+        - name: regcred
+      restartPolicy: Always

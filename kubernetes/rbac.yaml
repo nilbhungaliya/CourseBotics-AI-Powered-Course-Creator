@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: coursebotics-sa
+  namespace: coursebotics
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: coursebotics
+  name: coursebotics-role
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "endpoints"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps"]
+  resources: ["deployments", "replicasets"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: coursebotics-rolebinding
+  namespace: coursebotics
+subjects:
+- kind: ServiceAccount
+  name: coursebotics-sa
+  namespace: coursebotics
+roleRef:
+  kind: Role
+  name: coursebotics-role
+  apiGroup: rbac.authorization.k8s.io

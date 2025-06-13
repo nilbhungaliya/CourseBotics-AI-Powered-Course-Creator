@@ -1,0 +1,33 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: coursebotics-monitor
+  namespace: coursebotics
+  labels:
+    app: coursebotics
+spec:
+  selector:
+    matchLabels:
+      app: coursebotics
+  endpoints:
+  - port: http
+    interval: 30s
+    path: /api/health
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: coursebotics-metrics
+  namespace: coursebotics
+  labels:
+    app: coursebotics
+    monitoring: "true"
+spec:
+  type: ClusterIP
+  ports:
+  - port: 3000
+    targetPort: 3000
+    protocol: TCP
+    name: http
+  selector:
+    app: coursebotics

@@ -1,0 +1,35 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: coursebotics-alerts
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  groups:
+  - name: coursebotics.rules
+    rules:
+    - alert: CourseBoticsPodDown
+      expr: kube_pod_container_status_running{namespace="default", pod=~"coursebotics-.*"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "CourseBotics pod is down"
+        description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} has been down for more than 1 minute."
+    - alert: CourseBoticsPodHighCPU
+      expr: sum(rate(container_cpu_usage_seconds_total{namespace="default", pod=~"coursebotics-.*"}[5m])) by (pod) > 0.8
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "CourseBotics pod high CPU usage"
+        description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} has high CPU usage for more than 5 minutes."
+    - alert: CourseBoticsPodHighMemory
+      expr: sum(container_memory_usage_bytes{namespace="default", pod=~"coursebotics-.*"}) by (pod) / sum(container_spec_memory_limit_bytes{namespace="default", pod=~"coursebotics-.*"}) by (pod) > 0.8
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "CourseBotics pod high memory usage"
+        description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} has high memory usage for more than 5 minutes."
