@@ -44,3 +44,5 @@ secret.yaml
 
 updated-secret.yaml
 updated-secret-with-trusted-host.yaml
+
+GROQ_API_SETUP.md

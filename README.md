@@ -16,12 +16,14 @@
 
 ## 🌟 Overview
 
-CourseBotics revolutionizes course creation by leveraging Google Gemini AI to generate comprehensive educational content. Users simply provide course details like title, duration, chapters, and video preferences, and the platform creates a complete course outline with curated YouTube videos for each chapter.
+CourseBotics revolutionizes course creation by leveraging **Groq AI** (powered by Llama 3.3 70B) to generate comprehensive educational content. Users simply provide course details like title, duration, chapters, and video preferences, and the platform creates a complete course outline with curated YouTube videos for each chapter.
+
+> **🆕 Now using Groq AI!** We've switched from Google Gemini to Groq for faster, free, and more reliable course generation. See [GROQ_API_SETUP.md](GROQ_API_SETUP.md) for setup instructions.
 
 ## ✨ Key Features
 
 ### 🎯 Core Functionality
-- **AI-Powered Course Generation** - Utilizes Google Gemini 2.0 Flash for intelligent content creation
+- **AI-Powered Course Generation** - Utilizes Groq AI with Llama 3.3 70B for intelligent content creation
 - **Automated Chapter Creation** - Generates detailed chapter content with explanations and code examples
 - **Video Integration** - Automatically suggests relevant YouTube videos for each chapter
 - **Course Management** - Complete CRUD operations for courses and chapters
@@ -55,7 +57,7 @@ CourseBotics revolutionizes course creation by leveraging Google Gemini AI to ge
 - **Runtime**: Node.js with Next.js API routes
 - **Database**: PostgreSQL with Prisma ORM 6.8.2
 - **Authentication**: NextAuth.js 5.0 (GitHub, Google, Credentials)
-- **AI Integration**: Google Generative AI (Gemini 2.0 Flash)
+- **AI Integration**: Groq SDK with Llama 3.3 70B (Free)
 - **File Upload**: Cloudinary for image management
 - **Email**: React Email with Resend for transactional emails
 
@@ -163,7 +165,11 @@ DATABASE_URL="postgresql://username:password@localhost:5432/coursebotics"
 NEXTAUTH_SECRET="your-nextauth-secret"
 NEXTAUTH_URL="http://localhost:3000"
 
-# Google Gemini AI
+# AI API Keys (Choose one)
+# Groq AI (Free - Recommended)
+NEXT_PUBLIC_GROQ_API_KEY="your-groq-api-key"
+
+# Google Gemini AI (Alternative)
 NEXT_PUBLIC_GEMINI_API_KEY="your-gemini-api-key"
 
 # OAuth Providers (Optional)
