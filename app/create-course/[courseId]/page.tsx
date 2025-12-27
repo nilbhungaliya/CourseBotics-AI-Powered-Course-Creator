@@ -8,9 +8,10 @@ import ChapterList from './_components/ChapterList';
 import { Button } from '@/components/ui/button';
 import CourseDetail from './_components/CourseDetail';
 import CourseBasicInfo from './_components/CourseBasicInfo';
-import LoadingDialog from '../_components/LoadingDialog';
 import { CourseType } from '@/types/types';
 import { GenerateCourseContent } from './_utils/GenerateCourseContent';
+import { FullScreenLoader } from '@/components/ui/modern-loader';
+import { AnimatePresence } from 'framer-motion';
 
 function CoursePageLayout() {
     const { data: session } = useSession();
@@ -116,10 +117,14 @@ function CoursePageLayout() {
         <div className="pt-8 px-7 md:px-20 lg:px-44">
             <h2 className="font-bold text-center text-2xl text-purple-900">Course Layout</h2>
 
-            <LoadingDialog 
-                loading={loading} 
-                description="Generating Your Course Content"
-            />
+            <AnimatePresence>
+                {loading && (
+                    <FullScreenLoader 
+                        message="✨ Generating Your Course Content"
+                        submessage="Creating chapters, finding videos, and structuring content..."
+                    />
+                )}
+            </AnimatePresence>
 
             <CourseBasicInfo courseInfo={course} onRefresh={() => getCourse()} />
 

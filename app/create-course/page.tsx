@@ -7,10 +7,12 @@ import SelectCategory from './_components/SelectCategory';
 import TopicDesc from './_components/TopicDesc';
 import SelectOption from './_components/SelectOption';
 import { UserInputContext } from '../_context/UserInputContext';
-import LoadingDialog from './_components/LoadingDialog';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { GenerateCourseLayout } from './_utils/GenerateCourseLayout';
+import { toast } from 'sonner';
+import { FullScreenLoader } from '@/components/ui/modern-loader';
+import { AnimatePresence } from 'framer-motion';
 
 function CreateCourse() {
   const [step, setStep] = useState<number>(0);
@@ -64,13 +66,31 @@ function CreateCourse() {
   //   }
   // }
   const GenerateCourse = async () => {
-    setLoading(true); // Use `loading` state here
+    if (!session?.user) {
+      toast.error('Please sign in to create a course');
+      return;
+    }
+
+    if (!userInput?.category || !userInput?.topic || !userInput?.difficulty) {
+      toast.error('Please complete all required fields');
+      return;
+    }
+
+    setLoading(true);
+    
     try {
-      await GenerateCourseLayout(userInput, session?.user, router);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false); // Reset loading state
+      const result = await GenerateCourseLayout(userInput, session?.user, router);
+      
+      if (result?.success) {
+        toast.success('🎉 Course created successfully!');
+      } else {
+        setLoading(false);
+        toast.error(result?.error || 'Failed to generate course. Please try again.');
+      }
+    } catch (error: any) {
+      setLoading(false);
+      console.error('Error generating course:', error);
+      toast.error(error?.message || 'An error occurred while generating the course');
     }
   };
   
@@ -140,7 +160,15 @@ function CreateCourse() {
           </div>
         </div>
       </div>
-      <LoadingDialog loading={loading} />
+      
+      <AnimatePresence>
+        {loading && (
+          <FullScreenLoader 
+            message="🚀 Generating Your AI-Powered Course"
+            submessage="This may take 20-30 seconds. Please don't close this page."
+          />
+        )}
+      </AnimatePresence>
     </div>
   )
 }

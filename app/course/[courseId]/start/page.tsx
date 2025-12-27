@@ -9,9 +9,9 @@ import UserToolTip from "./_components/UserToolTip";
 import ChapterContent from "./_components/ChapterContent";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Image from "next/image";
-import LoadingDialog from "@/app/create-course/_components/LoadingDialog";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { FullScreenLoader, InlineLoader } from "@/components/ui/modern-loader";
 import { 
   BookOpen, 
   ChevronLeft, 
@@ -21,7 +21,8 @@ import {
   Star, 
   Award, 
   BookOpenCheck,
-  ChevronRight
+  ChevronRight,
+  Loader2
 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
@@ -33,7 +34,8 @@ function StartCourse() {
   const param = useParams();
   const [selectedChapter, setSelectedChapter] = useState<ChapterType | null>(null);
   const [chapterContent, setChapterContent] = useState<ChapterContentType | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [initialLoading, setInitialLoading] = useState<boolean>(true);
+  const [chapterLoading, setChapterLoading] = useState<boolean>(false);
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
   const [progress, setProgress] = useState<number>(0);
   const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -70,7 +72,7 @@ function StartCourse() {
   }, [param, session?.user]);
 
   const getCourse = async () => {
-    setLoading(true);
+    setInitialLoading(true);
     const courseId = param.courseId;
 
     try {
@@ -95,13 +97,13 @@ function StartCourse() {
     } catch (error) {
       console.error("Error fetching course:", error);
     } finally {
-      setLoading(false);
+      setInitialLoading(false);
     }
   };
 
   const getChapterContent = async (chapterId: number) => {
     try {
-      setLoading(true);
+      setChapterLoading(true);
       const response = await axios.post(
         `/api/getChapters`,
         {
@@ -124,17 +126,23 @@ function StartCourse() {
     } catch (e) {
       console.error("Error fetching chapter content:", e);
     } finally {
-      setLoading(false);
+      setChapterLoading(false);
     }
   };
 
   if (!course) {
-    return <LoadingDialog loading={loading} description={"Loading your course..."} />;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <FullScreenLoader 
+          message="Loading Your Course"
+          submessage="Setting up your learning experience..."
+        />
+      </div>
+    );
   }
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
-      <LoadingDialog loading={loading} description={"Loading content..."} />
       
       {/* Mobile sidebar overlay */}
       <AnimatePresence>
@@ -300,14 +308,21 @@ function StartCourse() {
         <ScrollArea className="flex-1">
           {selectedChapter ? (
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
+              key={selectedChapter.chapterName}
+              initial={{ opacity: 0.3 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.2 }}
             >
-              <ChapterContent
-                chapter={selectedChapter}
-                content={chapterContent}
-              />
+              {chapterLoading ? (
+                <div className="p-8">
+                  <InlineLoader message="Loading chapter content..." />
+                </div>
+              ) : (
+                <ChapterContent
+                  chapter={selectedChapter}
+                  content={chapterContent}
+                />
+              )}
             </motion.div>
           ) : (
             <motion.div 

@@ -10,7 +10,8 @@ import Link from "next/link";
 import EditCourseBasicInfo from "./_edit/EditCourseBasicInfo";
 import { uploadFileToCloudinary } from "../_utils/uploadFileToCloudinary";
 import { saveImageUrlToDB } from "../_utils/saveImageUrlToDB";
-import LoadingDialog from "../../_components/LoadingDialog";
+import { FullScreenLoader } from '@/components/ui/modern-loader';
+import { AnimatePresence } from 'framer-motion';
 
 type CourseBasicInfoProps = {
   courseInfo: CourseType | null;
@@ -59,7 +60,14 @@ const CourseBasicInfo = ({
 
   return (
     <div className="p-10 border rounded-xl shadow-sm mt-5">
-      <LoadingDialog loading={isUploading} description={"Please wait"} />
+      <AnimatePresence>
+        {isUploading && (
+          <FullScreenLoader 
+            message="Uploading Image"
+            submessage="Please wait while we upload your course banner..."
+          />
+        )}
+      </AnimatePresence>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div className="my-8 px-2">
           <h2 className="font-bold text-3xl text-primary">

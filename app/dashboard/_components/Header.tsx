@@ -263,16 +263,17 @@ export default function Header({ toggleSidebar, isSidebarOpen }: HeaderProps) {
         <div className="flex items-center gap-4">
           {/* Search Component */}
           <div className="relative hidden md:block" ref={searchRef}>
-            <Command className="rounded-lg border shadow-md">
+            <Command className="rounded-lg border shadow-md w-[300px]">
               <CommandInput
                 placeholder="Search courses..."
                 value={searchQuery}
                 onValueChange={handleSearch}
+                onFocus={() => searchQuery.length >= 2 && setShowSearchResults(true)}
                 className="h-9"
               />
 
               {showSearchResults && (
-                <CommandList className="absolute top-full left-0 right-0 mt-1 max-h-[300px] overflow-y-auto rounded-md border bg-popover shadow-md animate-in fade-in-0 zoom-in-95">
+                <CommandList className="absolute top-full left-0 right-0 mt-1 max-h-[300px] overflow-y-auto rounded-md border bg-popover shadow-md animate-in fade-in-0 zoom-in-95 z-50">
                   {isSearching ? (
                     <div className="flex items-center justify-center py-6">
                       <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />

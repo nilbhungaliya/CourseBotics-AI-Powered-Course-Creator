@@ -3,12 +3,13 @@
 import ChapterList from '@/app/create-course/[courseId]/_components/ChapterList';
 import CourseBasicInfo from '@/app/create-course/[courseId]/_components/CourseBasicInfo';
 import CourseDetail from '@/app/create-course/[courseId]/_components/CourseDetail';
-import LoadingDialog from '@/app/create-course/_components/LoadingDialog';
 import { CourseType } from '@/types/types';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import { FullScreenLoader } from '@/components/ui/modern-loader';
+import { AnimatePresence } from 'framer-motion';
 
 function CoursePage() {
     const { data: session } = useSession();
@@ -46,13 +47,21 @@ function CoursePage() {
         setLoading(false);
     };
 
+
     if (!course) return null;
 
 
     return (
         <div className="pt-8 px-7 md:px-20 lg:px-44">
 
-            <LoadingDialog loading={loading} />
+            <AnimatePresence>
+                {loading && (
+                    <FullScreenLoader 
+                        message="Loading Course"
+                        submessage="Please wait while we fetch your course details..."
+                    />
+                )}
+            </AnimatePresence>
 
             <CourseBasicInfo courseInfo={course} onRefresh={() => getCourse()} edit={false} />
 

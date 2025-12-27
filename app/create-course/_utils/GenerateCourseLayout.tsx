@@ -28,15 +28,37 @@ export const GenerateCourseLayout = async (
   try {
     let id = uuid4();
 
+    // Generate course layout using AI
     const result = await generateCourseLayout_AI.sendMessage(FINAL_PROMT);
-    const data = await JSON.parse(result.response?.text());
-    // console.log(data);
+    const responseText = result.response?.text();
+    
+    if (!responseText) {
+      throw new Error('Failed to generate course content from AI');
+    }
 
+    const data = JSON.parse(responseText);
+    
+    // Validate that the course data was generated
+    if (!data || !data.courseName) {
+      throw new Error('Invalid course data generated');
+    }
+
+    // Store the course in database
     const response = await storeDataInDatabase(id, userInput, data, user);
-    // console.log(response);
+    
+    if (!response || response.error) {
+      throw new Error(response?.error || 'Failed to save course to database');
+    }
 
+    // Navigate to the created course
     router.replace(`/create-course/${id}`);
-  } catch (error) {
-    console.log(error);
+    
+    return { success: true, courseId: id };
+  } catch (error: any) {
+    console.error('Error in GenerateCourseLayout:', error);
+    return { 
+      success: false, 
+      error: error.message || 'Failed to generate course. Please try again.' 
+    };
   }
 };
