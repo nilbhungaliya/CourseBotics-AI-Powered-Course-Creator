@@ -40,9 +40,17 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# Kubernetes secrets (NEVER COMMIT THESE!)
 secret.yaml
-
+*secret*.yaml
+kubernetes/secret.yaml
+kubernetes/*secret*.yaml
 updated-secret.yaml
 updated-secret-with-trusted-host.yaml
 
+# Setup guides with sensitive info
 GROQ_API_SETUP.md
+
+# Any file containing 'secret' or 'key'
+*secret*
+*-secret-*
