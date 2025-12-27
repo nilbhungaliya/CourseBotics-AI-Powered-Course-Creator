@@ -4,9 +4,10 @@ import { InputJsonValue, JsonValue } from '@prisma/client/runtime/library';
 
 export const runtime = 'nodejs'
 
-export const POST = async (req: NextRequest, args: any) => {
+export const POST = async (req: NextRequest, { params }: { params: Promise<{ courseId: string }> }) => {
   try {
-    const courseId = args.params.courseId;
+    // Await params as required by Next.js 15
+    const { courseId } = await params;
     // console.log("Received courseId:", courseId);
     // Parse the incoming request body
     const body = await req.json();
@@ -39,7 +40,9 @@ export const POST = async (req: NextRequest, args: any) => {
   }
 };
 
-export const PUT = async(req:NextRequest, args:any)=>{
+export const PUT = async(req:NextRequest, { params }: { params: Promise<{ courseId: string }> })=>{
+  // Note: This PUT doesn't use courseId from params, but we still need to await it
+  await params;
   const body = await req.json();
   const { id, courseOutput } = body;
   // console.log(body);
@@ -84,9 +87,10 @@ export const PUT = async(req:NextRequest, args:any)=>{
 
 
 
-export const PATCH = async (req: NextRequest, args:any) => {
+export const PATCH = async (req: NextRequest, { params }: { params: Promise<{ courseId: string }> }) => {
     try {
-      const courseId = args.params.courseId;
+      // Await params as required by Next.js 15
+      const { courseId } = await params;
       const body = await req.json();
       const { user, isPublished } = body;
   

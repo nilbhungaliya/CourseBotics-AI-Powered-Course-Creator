@@ -3,9 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = 'nodejs'
 
-export const POST = async (req: NextRequest, args: any) => {
+export const POST = async (req: NextRequest, { params }: { params: Promise<{ courseId: string }> }) => {
   try {
-    const courseId = await args.params.courseId;
+    // Await params as required by Next.js 15
+    const { courseId } = await params;
     const body = await req.json();
     const { fileUrl } = body;
 
