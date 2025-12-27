@@ -1,11 +1,18 @@
 import { z } from "zod";
+import { isEmailDomainTrusted } from "@/lib/email-validation";
 
 export const SignInSchema = z.object({
   email: z
     .string({ required_error: "Email is required" })
     .email({ message: "Enter a valid email" })
     .trim()
-    .toLowerCase(),
+    .toLowerCase()
+    .refine(
+      (email) => isEmailDomainTrusted(email),
+      {
+        message: "Please use a proper email from trusted providers (Gmail, Yahoo, Outlook, etc.)",
+      }
+    ),
   password: z
     .string({ required_error: "Password is required" })
     .min(1, "Password is required")
