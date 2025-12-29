@@ -410,7 +410,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-**Built with ❤️ by the CourseBotics Team**
+**Built with ❤️ by the CourseBotics Teams**
 
 [🌐 Website](https://coursebotics.com) • [📧 Contact](mailto:contact@coursebotics.com) • [🐛 Issues](https://github.com/your-username/coursebotics/issues)
 
