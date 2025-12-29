@@ -64,19 +64,42 @@ export default function Hero() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.8 }}
-                            className="flex items-center justify-center gap-4"
+                            className="flex items-center justify-center gap-4 bg-background/80 backdrop-blur-sm rounded-full px-5 py-3 shadow-lg border border-border/50"
                         >
                             <div className="flex -space-x-3">
-                                {[...Array(4)].map((_, i) => (
+                                {[
+                                    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face",
+                                    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
+                                    "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=100&h=100&fit=crop&crop=face",
+                                    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
+                                ].map((src, i) => (
                                     <div
                                         key={i}
-                                        className="w-10 h-10 rounded-full border-2 border-background bg-gradient-to-br from-primary/20 to-primary/10"
-                                    />
+                                        className="w-10 h-10 rounded-full border-2 border-background overflow-hidden ring-2 ring-primary/20 transition-transform duration-300 hover:scale-110 hover:z-10"
+                                    >
+                                        <img 
+                                            src={src} 
+                                            alt={`User ${i + 1}`}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </div>
                                 ))}
+                                <div className="w-10 h-10 rounded-full border-2 border-background bg-primary flex items-center justify-center text-primary-foreground text-xs font-bold ring-2 ring-primary/20">
+                                    +99
+                                </div>
                             </div>
-                            <p className="text-sm text-muted-foreground">
-                                Trusted by <span className="font-medium text-foreground">1,000+</span> educators
-                            </p>
+                            <div className="flex flex-col items-start">
+                                <div className="flex items-center gap-1">
+                                    {[...Array(5)].map((_, i) => (
+                                        <svg key={i} className="w-4 h-4 text-yellow-500 fill-current" viewBox="0 0 20 20">
+                                            <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                                        </svg>
+                                    ))}
+                                </div>
+                                <p className="text-sm text-muted-foreground">
+                                    Trusted by <span className="font-semibold text-foreground">1,000+</span> educators
+                                </p>
+                            </div>
                         </motion.div>
                     </motion.div>
                 </div>

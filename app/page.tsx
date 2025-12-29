@@ -1,8 +1,15 @@
 "use client";
-import { Header } from "./_components/Header";
+import { Navbar } from "./_components/Navbar";
 import Hero from "./_components/Hero";
 import { motion, AnimatePresence } from "framer-motion";
 import Features from "./_components/Features";
+import Stats from "./_components/Stats";
+import HowItWorks from "./_components/HowItWorks";
+import Testimonials from "./_components/Testimonials";
+import TechStack from "./_components/TechStack";
+import Partners from "./_components/Partners";
+import Newsletter from "./_components/Newsletter";
+import Pricing from "./_components/Pricing";
 import FAQ from "./_components/FAQ";
 import CTA from "./_components/CTA";
 import Footer from "./_components/Footer";
@@ -13,292 +20,178 @@ import { LazySection } from "@/components/ui/lazy-section";
 import { ScrollPerformanceOptimizer } from "@/components/ui/scroll-performance";
 import { useContentPreloader } from "@/hooks/use-content-preloader";
 import { useSmoothScroll } from "@/hooks/use-smooth-scroll";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+
+// Smooth spring transition config
+const smoothTransition = {
+  type: "spring" as const,
+  stiffness: 100,
+  damping: 30,
+  mass: 1,
+};
+
+// Smooth easing for CSS-like animations
+const smoothEase = [0.25, 0.1, 0.25, 1] as const;
 
 export default function Home() {
   const [contentReady, setContentReady] = useState(false);
   const { isLoading } = useContentPreloader({
     dependencies: [contentReady],
-    minLoadingTime: 2000,
+    minLoadingTime: 1500,
   });
 
   // Initialize smooth scrolling
   useSmoothScroll({
-    duration: 1200,
-    easing: "cubic-bezier(0.23, 1, 0.32, 1)",
+    duration: 1000,
+    easing: "cubic-bezier(0.25, 0.1, 0.25, 1)",
     offset: 0,
   });
 
   useEffect(() => {
-    // Simulate content loading (images, data, etc.)
     const timer = setTimeout(() => {
       setContentReady(true);
-    }, 1000);
-
+    }, 800);
     return () => clearTimeout(timer);
   }, []);
+
+  // Memoize background elements to prevent re-renders
+  const backgroundElements = useMemo(() => (
+    <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+      {/* Static gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-background" />
+      
+      {/* Subtle animated gradient overlay - GPU accelerated */}
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-tr from-primary/5 via-transparent to-primary/5"
+        style={{ willChange: "opacity" }}
+        animate={{ opacity: [0.3, 0.6, 0.3] }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      />
+
+      {/* Minimal floating orbs - reduced count for performance */}
+      {[0, 1, 2].map((i) => (
+        <motion.div
+          key={`orb-${i}`}
+          className="absolute rounded-full bg-primary/8 blur-3xl"
+          style={{
+            width: 300 + i * 100,
+            height: 300 + i * 100,
+            left: `${20 + i * 30}%`,
+            top: `${10 + i * 25}%`,
+            willChange: "transform, opacity",
+          }}
+          animate={{
+            y: [0, -30, 0],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{
+            duration: 12 + i * 4,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+
+      {/* Simple grid lines - CSS only, no JS animation */}
+      <div className="absolute inset-0 opacity-[0.03]">
+        <div 
+          className="w-full h-full"
+          style={{
+            backgroundImage: `
+              linear-gradient(to right, hsl(var(--primary)) 1px, transparent 1px),
+              linear-gradient(to bottom, hsl(var(--primary)) 1px, transparent 1px)
+            `,
+            backgroundSize: '60px 60px',
+          }}
+        />
+      </div>
+    </div>
+  ), []);
 
   return (
     <>
       <ScrollPerformanceOptimizer />
       <PageLoader isLoading={isLoading} />
 
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {!isLoading && (
           <motion.main
-            className="relative min-h-screen w-full max-w-full overflow-hidden"
+            className="relative min-h-screen w-full max-w-full overflow-x-hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            style={{ overflowX: "hidden" }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, ease: smoothEase }}
           >
             <SmoothScroll />
-            {/* Background effects */}
-            <div className="fixed inset-0 -z-10 overflow-hidden">
-              {/* Animated gradient background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-background" />
-
-              {/* Animated mesh grid */}
-              <div className="absolute inset-0 overflow-hidden">
-                {[...Array(20)].map((_, i) => (
-                  <motion.div
-                    key={`line-${i}`}
-                    className="absolute h-[1px] bg-gradient-to-r from-transparent via-primary/10 to-transparent"
-                    style={{
-                      top: `${i * 5}%`,
-                      left: "0",
-                      right: "0",
-                      transform: `translateX(${Math.sin(i) * 20}px)`,
-                    }}
-                    animate={{
-                      opacity: [0.1, 0.2, 0.1],
-                      scaleX: [1, 1.1, 1],
-                    }}
-                    transition={{
-                      duration: 5,
-                      repeat: Infinity,
-                      repeatType: "reverse",
-                      ease: "easeInOut",
-                      delay: i * 0.15,
-                    }}
-                  />
-                ))}
-              </div>
-
-              {/* Floating tech elements */}
-              <div className="absolute inset-0 overflow-hidden">
-                {[...Array(15)].map((_, i) => (
-                  <motion.div
-                    key={`tech-${i}`}
-                    className="absolute"
-                    style={{
-                      left: `${Math.random() * 100}%`,
-                      top: `${Math.random() * 100}%`,
-                    }}
-                    animate={{
-                      y: [0, -15, 0],
-                      x: [0, Math.random() * 10 - 5, 0],
-                      rotate: [0, 180],
-                    }}
-                    transition={{
-                      duration: Math.random() * 5 + 5,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: Math.random() * 2,
-                    }}
-                  >
-                    <div className="relative">
-                      {/* Tech symbol */}
-                      <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 backdrop-blur-sm" />
-                      {/* Connection lines */}
-                      <div className="absolute inset-0">
-                        {[...Array(4)].map((_, j) => (
-                          <motion.div
-                            key={`line-${j}`}
-                            className="absolute w-12 h-[1px] bg-gradient-to-r from-primary/20 to-transparent"
-                            style={{
-                              transform: `rotate(${j * 90}deg)`,
-                              transformOrigin: "left center",
-                            }}
-                            animate={{
-                              scaleX: [0, 1, 0],
-                              opacity: [0, 0.3, 0],
-                            }}
-                            transition={{
-                              duration: 3,
-                              repeat: Infinity,
-                              ease: "easeInOut",
-                              delay: j * 0.7,
-                            }}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* Glowing orbs */}
-              <div className="absolute inset-0 overflow-hidden">
-                {[...Array(5)].map((_, i) => (
-                  <motion.div
-                    key={`orb-${i}`}
-                    className="absolute rounded-full bg-primary/10 blur-xl"
-                    style={{
-                      width: `${Math.random() * 200 + 100}px`,
-                      height: `${Math.random() * 200 + 100}px`,
-                      left: `${Math.random() * 100}%`,
-                      top: `${Math.random() * 100}%`,
-                    }}
-                    animate={{
-                      scale: [1, 1.1, 1],
-                      opacity: [0.05, 0.15, 0.05],
-                      x: [0, Math.random() * 30 - 15, 0],
-                      y: [0, Math.random() * 30 - 15, 0],
-                    }}
-                    transition={{
-                      duration: Math.random() * 6 + 8,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      repeatType: "reverse",
-                    }}
-                  />
-                ))}
-              </div>
-
-              {/* Animated particles */}
-              <div className="absolute inset-0 overflow-hidden">
-                {[...Array(30)].map((_, i) => (
-                  <motion.div
-                    key={`particle-${i}`}
-                    className="absolute w-1 h-1 rounded-full bg-primary/20"
-                    style={{
-                      left: `${Math.random() * 100}%`,
-                      top: `${Math.random() * 100}%`,
-                    }}
-                    animate={{
-                      y: [0, -80],
-                      opacity: [0, 0.6, 0],
-                    }}
-                    transition={{
-                      duration: Math.random() * 3 + 3,
-                      repeat: Infinity,
-                      ease: "easeOut",
-                      delay: Math.random() * 3,
-                    }}
-                  />
-                ))}
-              </div>
-
-              {/* Tech circuit patterns */}
-              <div className="absolute inset-0 overflow-hidden">
-                {[...Array(8)].map((_, i) => (
-                  <motion.div
-                    key={`circuit-${i}`}
-                    className="absolute"
-                    style={{
-                      left: `${Math.random() * 100}%`,
-                      top: `${Math.random() * 100}%`,
-                    }}
-                  >
-                    <div className="relative w-24 h-24">
-                      {/* Circuit lines */}
-                      <div className="absolute inset-0">
-                        {[...Array(4)].map((_, j) => (
-                          <motion.div
-                            key={`circuit-line-${j}`}
-                            className="absolute h-[1px] bg-primary/15"
-                            style={{
-                              width: "100%",
-                              top: `${j * 33}%`,
-                            }}
-                            animate={{
-                              scaleX: [0, 1],
-                              opacity: [0, 0.3, 0],
-                            }}
-                            transition={{
-                              duration: 3.5,
-                              repeat: Infinity,
-                              ease: "easeInOut",
-                              delay: j * 0.8,
-                            }}
-                          />
-                        ))}
-                      </div>
-                      {/* Circuit nodes */}
-                      {[...Array(4)].map((_, j) => (
-                        <motion.div
-                          key={`circuit-node-${j}`}
-                          className="absolute w-2 h-2 rounded-full bg-primary/20"
-                          style={{
-                            left: `${j % 2 === 0 ? "0" : "100%"}`,
-                            top: `${Math.floor(j / 2) * 100}%`,
-                            transform: "translate(-50%, -50%)",
-                          }}
-                          animate={{
-                            scale: [1, 1.3, 1],
-                            opacity: [0.2, 0.4, 0.2],
-                          }}
-                          transition={{
-                            duration: 3,
-                            repeat: Infinity,
-                            ease: "easeInOut",
-                            delay: j * 0.8,
-                          }}
-                        />
-                      ))}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
+            
+            {backgroundElements}
 
             {/* Main content */}
             <div className="relative">
+              <Navbar />
+
               <motion.div
                 initial={{ y: 30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ 
-                  duration: 1.2, 
-                  delay: 0.2,
-                  ease: [0.23, 1, 0.32, 1]
-                }}
-                style={{ willChange: "transform, opacity" }}
-              >
-                <Header />
-              </motion.div>
-
-              <motion.div
-                initial={{ y: 40, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ 
-                  duration: 1.4, 
-                  delay: 0.4,
-                  ease: [0.23, 1, 0.32, 1]
+                  duration: 0.8,
+                  ease: smoothEase,
+                  delay: 0.1,
                 }}
                 style={{ willChange: "transform, opacity" }}
               >
                 <Hero />
               </motion.div>
 
-              <LazySection delay={0.2} threshold={0.15}>
+              <LazySection delay={0.05} threshold={0.1}>
+                <Partners />
+              </LazySection>
+
+              <LazySection delay={0.05} threshold={0.1}>
+                <Stats />
+              </LazySection>
+
+              <LazySection delay={0.05} threshold={0.1}>
                 <Features />
               </LazySection>
 
-              <LazySection delay={0.2} threshold={0.15}>
+              <LazySection delay={0.05} threshold={0.1}>
+                <HowItWorks />
+              </LazySection>
+
+              <LazySection delay={0.05} threshold={0.1}>
+                <TechStack />
+              </LazySection>
+
+              <LazySection delay={0.05} threshold={0.1}>
+                <Testimonials />
+              </LazySection>
+
+              <LazySection delay={0.05} threshold={0.1}>
+                <Pricing />
+              </LazySection>
+
+              <LazySection delay={0.05} threshold={0.1}>
                 <FAQ />
               </LazySection>
 
-              <LazySection delay={0.2} threshold={0.15}>
+              <LazySection delay={0.05} threshold={0.1}>
+                <Newsletter />
+              </LazySection>
+
+              <LazySection delay={0.05} threshold={0.1}>
                 <CTA />
               </LazySection>
 
-              <LazySection delay={0.2} threshold={0.15}>
+              <LazySection delay={0.05} threshold={0.1}>
                 <Footer />
               </LazySection>
             </div>
 
-            {/* Scroll to top button */}
             <ScrollToTop />
           </motion.main>
         )}
