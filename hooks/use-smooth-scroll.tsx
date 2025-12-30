@@ -15,19 +15,12 @@ export function useSmoothScroll(options: UseSmoothScrollOptions = {}) {
     // Minimal smooth scrolling setup to avoid conflicts
     if (typeof window !== "undefined") {
       const html = document.documentElement;
-      const body = document.body;
       
-      // Only set essential smooth scrolling properties
+      // Only set smooth scrolling on html element
       html.style.scrollBehavior = "smooth";
-      body.style.scrollBehavior = "smooth";
       
-      // Add momentum scrolling for iOS
-      // html.style.webkitOverflowScrolling = "touch";
-      // body.style.webkitOverflowScrolling = "touch";
-      
-      // Prevent overscroll
+      // Prevent overscroll on html only
       html.style.overscrollBehavior = "contain";
-      body.style.overscrollBehavior = "contain";
     }
   }, []);
 
