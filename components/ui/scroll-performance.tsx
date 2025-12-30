@@ -6,23 +6,13 @@ export function ScrollPerformanceOptimizer() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // Optimize scroll performance without conflicting with existing styles
+    // Optimize scroll performance - only on html element
     const optimizeScrolling = () => {
       const html = document.documentElement;
-      const body = document.body;
 
-      // Set only essential properties for smooth scrolling
-      const scrollProperties = {
-        webkitOverflowScrolling: "touch",
-        overscrollBehavior: "contain",
-      };
-
-      // Apply minimal optimizations
-      Object.entries(scrollProperties).forEach(([property, value]) => {
-        const cssProperty = property.replace(/([A-Z])/g, '-$1').toLowerCase();
-        html.style.setProperty(cssProperty, value);
-        body.style.setProperty(cssProperty, value);
-      });
+      // Set only essential properties for smooth scrolling on html only
+      html.style.setProperty("-webkit-overflow-scrolling", "touch");
+      html.style.setProperty("overscroll-behavior", "contain");
 
       // Add passive event listeners for better performance
       const passiveOptions = { passive: true };
