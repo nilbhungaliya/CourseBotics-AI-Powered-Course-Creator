@@ -56,48 +56,31 @@ export default function Home() {
 
   // Memoize background elements to prevent re-renders
   const backgroundElements = useMemo(() => (
-    <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+    <div className="fixed inset-0 -z-10 pointer-events-none">
       {/* Static gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-background" />
       
-      {/* Subtle animated gradient overlay - GPU accelerated */}
-      <motion.div
-        className="absolute inset-0 bg-gradient-to-tr from-primary/5 via-transparent to-primary/5"
-        style={{ willChange: "opacity" }}
-        animate={{ opacity: [0.3, 0.6, 0.3] }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "linear",
-        }}
+      {/* Subtle animated gradient overlay */}
+      <div
+        className="absolute inset-0 bg-gradient-to-tr from-primary/5 via-transparent to-primary/5 opacity-50"
       />
 
-      {/* Minimal floating orbs - reduced count for performance */}
+      {/* Static floating orbs - no animation to prevent flicker */}
       {[0, 1, 2].map((i) => (
-        <motion.div
+        <div
           key={`orb-${i}`}
-          className="absolute rounded-full bg-primary/8 blur-3xl"
+          className="absolute rounded-full bg-primary/5 blur-3xl"
           style={{
             width: 300 + i * 100,
             height: 300 + i * 100,
             left: `${20 + i * 30}%`,
             top: `${10 + i * 25}%`,
-            willChange: "transform, opacity",
-          }}
-          animate={{
-            y: [0, -30, 0],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{
-            duration: 12 + i * 4,
-            repeat: Infinity,
-            ease: "easeInOut",
           }}
         />
       ))}
 
-      {/* Simple grid lines - CSS only, no JS animation */}
-      <div className="absolute inset-0 opacity-[0.03]">
+      {/* Simple grid lines */}
+      <div className="absolute inset-0 opacity-[0.02]">
         <div 
           className="w-full h-full"
           style={{
@@ -120,7 +103,7 @@ export default function Home() {
       <AnimatePresence mode="wait">
         {!isLoading && (
           <motion.main
-            className="relative min-h-screen w-full max-w-full overflow-x-hidden"
+            className="relative w-full"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

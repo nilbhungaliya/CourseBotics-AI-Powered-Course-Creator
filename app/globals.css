@@ -88,49 +88,46 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    /* Remove any potential scroll conflicts */
+    /* Prevent horizontal scroll only */
     overflow-x: hidden;
+    overflow-y: auto;
+    height: 100%;
   }
   
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
-    /* Enhanced smooth scrolling */
-    scroll-behavior: smooth;
     /* Better text rendering */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* Prevent horizontal scroll */
+    /* NO scroll on body - let html handle it */
     max-width: 100vw;
+    overflow: visible;
+    height: auto;
+    min-height: 100%;
   }
   
-  /* Enhanced custom scrollbar */
+  /* Thin scrollbar styling */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
   
   ::-webkit-scrollbar-track {
-    @apply bg-background;
-    border-radius: 4px;
+    @apply bg-transparent;
   }
   
   ::-webkit-scrollbar-thumb {
     @apply bg-primary/20 rounded-full;
-    border-radius: 4px;
     transition: background-color 0.2s ease;
   }
   
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-primary/40;
   }
-  
-  ::-webkit-scrollbar-thumb:active {
-    @apply bg-primary/50;
-  }
-  
+
   /* Firefox scrollbar */
-  * {
+  html {
     scrollbar-width: thin;
     scrollbar-color: hsl(var(--primary) / 0.2) transparent;
   }
@@ -344,25 +341,16 @@
   }
 }
 
-/* Prevent multiple scrollbars */
-html, body {
-  overflow-x: hidden !important;
-  /* Ensure only one scrollbar */
-  height: 100%;
-  width: 100%;
-  position: relative;
-}
-
 /* Prevent any child elements from creating scrollbars */
 #__next, [data-nextjs-scroll-focus-boundary] {
-  overflow-x: hidden !important;
+  overflow: visible;
   width: 100%;
   max-width: 100vw;
 }
 
-/* Ensure main content doesn't overflow */
+/* Ensure main content flows naturally without creating scroll */
 main {
-  overflow-x: hidden !important;
+  overflow: visible;
   width: 100%;
   max-width: 100vw;
 }
