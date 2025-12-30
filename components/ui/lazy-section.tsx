@@ -22,19 +22,19 @@ export function LazySection({
   const isInView = useInView(ref, { 
     once: true, 
     amount: threshold,
-    margin: "0px 0px -100px 0px" // Start animation before element is fully visible
+    margin: "0px 0px -50px 0px"
   });
 
   return (
     <motion.div
       ref={ref}
-      className={cn("smooth-section", className)}
-      initial={{ opacity: 0, y: 30 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      className={cn(className)}
+      initial={{ opacity: 0.4, y: 20 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0.4, y: 20 }}
       transition={{ 
-        duration: 0.3, 
+        duration: 0.6, 
         delay: delay,
-        ease: [0.25, 0.46, 0.45, 0.94] // Custom cubic-bezier for ultra-smooth animation
+        ease: "easeOut"
       }}
     >
       {children}
