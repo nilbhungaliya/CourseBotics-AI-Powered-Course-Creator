@@ -38,7 +38,11 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <SessionProvider session={session}>
+          <SessionProvider 
+            session={session}
+            refetchInterval={0} // Disable periodic refetching
+            refetchOnWindowFocus={false} // Disable refetch when window gains focus
+          >
             {children}
             <Toaster position="top-center" richColors />
           </SessionProvider>
